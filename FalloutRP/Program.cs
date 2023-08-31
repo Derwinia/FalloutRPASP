@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using FalloutRPDAL;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,19 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddCors(builder =>
+{
+    builder.AddDefaultPolicy(o =>
+    {
+        o.AllowAnyOrigin();
+        o.AllowAnyHeader();
+        o.AllowAnyMethod();
+    });
+});
+
+builder.Services.AddDbContext<FalloutRPContext> (
+    o => o.UseSqlServer(builder.Configuration.GetConnectionString("default")));
 
 var app = builder.Build();
 
@@ -16,7 +32,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors();
+
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
