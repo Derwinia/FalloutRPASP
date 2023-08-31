@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FalloutRP", "FalloutRP\FalloutRP.csproj", "{2B9EEB77-C3E9-4A9A-9672-3F38E3A990CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B9EEB77-C3E9-4A9A-9672-3F38E3A990CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B9EEB77-C3E9-4A9A-9672-3F38E3A990CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B9EEB77-C3E9-4A9A-9672-3F38E3A990CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B9EEB77-C3E9-4A9A-9672-3F38E3A990CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FB629F07-D05B-4406-B7F8-25B3F5648E06}
+	EndGlobalSection
+EndGlobal
