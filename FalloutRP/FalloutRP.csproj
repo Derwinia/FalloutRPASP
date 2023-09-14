@@ -17,11 +17,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 	<ItemGroup>
 		<ProjectReference Include="..\FalloutRPDAL\FalloutRPDAL.csproj" />
 	</ItemGroup>

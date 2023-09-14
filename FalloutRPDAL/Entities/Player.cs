@@ -3,9 +3,10 @@ namespace FalloutRPDAL.Entities
 {
     public class Player
     {
-        public Guid id { get; set; }
+        public int Id { get; set; }
         public string Pseudo { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
+        public byte[] PasswordHash { get; set; } = new byte[32];
+        public byte[] PasswordSalt { get; set; } = new byte[32];
         public string Team { get; set; } = string.Empty;
     }
 }
