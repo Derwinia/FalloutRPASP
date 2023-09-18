@@ -18,6 +18,10 @@
   </ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="Validators\" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\FalloutRPDAL\FalloutRPDAL.csproj" />
 	</ItemGroup>
 

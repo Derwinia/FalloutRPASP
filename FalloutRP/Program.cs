@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,13 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 TokenConfig config = builder.Configuration.GetSection("Jwt").Get<TokenConfig>();
 
 builder.Services.AddSingleton(config);
+
 builder.Services.AddScoped<PlayerService>();
+builder.Services.AddScoped<RuleService>();
+
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<PasswordService>();
 
-
 builder.Services.AddControllers();
-
 
 builder.Services.AddDbContext<FalloutRPContext> (
     o => o.UseSqlServer(builder.Configuration.GetConnectionString("default")));

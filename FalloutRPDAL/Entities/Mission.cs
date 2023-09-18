@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FalloutRPDAL.Entities
 {
-    internal class Mission
+    public class Mission
     {
     }
 }

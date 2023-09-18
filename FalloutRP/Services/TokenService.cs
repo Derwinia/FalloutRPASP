@@ -57,8 +57,8 @@ namespace FalloutRP.Services
         /// <returns>List of Claim</returns>
         private IEnumerable<Claim> CreateClaims(Player player)
         {
-            yield return new Claim(ClaimTypes.GivenName, player.Pseudo);
             yield return new Claim(ClaimTypes.NameIdentifier, player.Id.ToString(), ClaimValueTypes.Integer);
+            yield return new Claim(ClaimTypes.GivenName, player.Pseudo);
             yield return new Claim(ClaimTypes.Role, player.Team);
         }
     }

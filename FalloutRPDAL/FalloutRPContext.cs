@@ -8,6 +8,7 @@ namespace FalloutRPDAL
     public class FalloutRPContext : DbContext
     {
         public DbSet<Player> Players { get; set; }
+        public DbSet<Rule> Rules { get; set; }
 
         public FalloutRPContext(DbContextOptions options) : base(options)
         {
@@ -15,6 +16,7 @@ namespace FalloutRPDAL
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new PlayerConfig());
+            builder.ApplyConfiguration(new RuleConfig());
 
             LoadPlayer(builder);
         }
@@ -33,6 +35,34 @@ namespace FalloutRPDAL
                     PasswordSalt = passwordSalt,
                     PasswordHash = passwordHash,
                     Team = "admin"
+                }
+            });
+
+            builder.Entity<Rule>().HasData(new List<Rule>
+            {
+                new Rule
+                {
+                    Id = 1,
+                    Order = 1,
+                    Name = "règle n°1",
+                    ShortDescription = "petite description",
+                    Description = "longue description"
+                },
+                new Rule
+                {
+                    Id = 2,
+                    Order = 2,
+                    Name = "règle n°2",
+                    ShortDescription = "petite description2",
+                    Description = "longue description2"
+                },
+                new Rule
+                {
+                    Id = 3,
+                    Order = 3,
+                    Name = "règle n°3",
+                    ShortDescription = "petite description3",
+                    Description = "longue description3"
                 }
             });
         }

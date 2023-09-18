@@ -10,13 +10,10 @@ namespace FalloutRP.Services
 {
     public class PlayerService
     {
-        private readonly FalloutRPContext falloutRPContext;
-        private readonly PasswordService passwordService;
-
-        public PlayerService(FalloutRPContext falloutRPContext, PasswordService passwordService)
+        private readonly FalloutRPContext _falloutRPContext;
+        public PlayerService(FalloutRPContext falloutRPContext)
         {
-            this.falloutRPContext = falloutRPContext;
-            this.passwordService = passwordService;
+            _falloutRPContext = falloutRPContext;
         }
 
         /// <summary>
@@ -26,7 +23,7 @@ namespace FalloutRP.Services
         public IEnumerable<PlayerDetailDTO> GetAllPlayer()
         {
             List<PlayerDetailDTO> players = new List<PlayerDetailDTO>();
-            List<Player> playerList = falloutRPContext.Players.ToList();
+            List<Player> playerList = _falloutRPContext.Players.ToList();
             foreach (Player player in playerList)
             {
                 players.Add(new PlayerDetailDTO()
@@ -46,7 +43,7 @@ namespace FalloutRP.Services
         /// <returns>Player entity</returns>
         public Player? GetByUsername(string pseudo)
         {
-            return falloutRPContext.Players.FirstOrDefault(u => u.Pseudo == pseudo);
+            return _falloutRPContext.Players.FirstOrDefault(u => u.Pseudo == pseudo);
         }
 
         /// <summary>
@@ -54,7 +51,7 @@ namespace FalloutRP.Services
         /// </summary>
         public void Add(PlayerCreateDTO playerCreateDTO)
         {
-            Player? player = falloutRPContext.Players.FirstOrDefault(u => u.Pseudo == playerCreateDTO.pseudo);
+            Player? player = _falloutRPContext.Players.FirstOrDefault(u => u.Pseudo == playerCreateDTO.pseudo);
 
             if (player != null)
             {
@@ -71,8 +68,8 @@ namespace FalloutRP.Services
             player.PasswordSalt = passwordSalt;
             player.PasswordHash = passwordHash;
 
-            falloutRPContext.Players.Add(player);
-            falloutRPContext.SaveChanges();
+            _falloutRPContext.Players.Add(player);
+            _falloutRPContext.SaveChanges();
         }
 
         /// <summary>
@@ -84,7 +81,7 @@ namespace FalloutRP.Services
         /// <exception cref="ValidationException"></exception>
         public void Delete(int idToDelete)
         {
-            Player? player = falloutRPContext.Players.FirstOrDefault(p => p.Id == idToDelete);
+            Player? player = _falloutRPContext.Players.FirstOrDefault(p => p.Id == idToDelete);
 
             if (player is null)
             {
@@ -96,8 +93,8 @@ namespace FalloutRP.Services
                 throw new ValidationException("Cet utilisateur ne peut pas être supprimé");
             }
 
-            falloutRPContext.Remove(player);
-            falloutRPContext.SaveChanges();
+            _falloutRPContext.Remove(player);
+            _falloutRPContext.SaveChanges();
         }
 
         /// <summary>
@@ -125,7 +122,7 @@ namespace FalloutRP.Services
         /// <exception cref="PasswordDoesNotMatchExeption"></exception>
         public void ChangePassword(PlayerChangePasswordDTO playerChangePasswordDTO)
         {
-            Player? player = falloutRPContext.Players.FirstOrDefault(u => u.Id == playerChangePasswordDTO.id);
+            Player? player = _falloutRPContext.Players.FirstOrDefault(u => u.Id == playerChangePasswordDTO.id);
 
             if (player == null)
             {
@@ -136,7 +133,7 @@ namespace FalloutRP.Services
             player.PasswordHash = passwordHash;
             player.PasswordSalt = passwordSalt;
 
-            falloutRPContext.SaveChanges();
+            _falloutRPContext.SaveChanges();
         }
     }
 }
