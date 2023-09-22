@@ -2,12 +2,14 @@
 using FalloutRPDAL.Configs;
 using FalloutRPDAL.Entities;
 using FalloutRPDAL.Services;
+using FalloutRPDAL.Entities.CharacterClasses;
 
 namespace FalloutRPDAL
 {
     public class FalloutRPContext : DbContext
     {
         public DbSet<Player> Players { get; set; }
+        public DbSet<Team> Teams { get; set; }
         public DbSet<Rule> Rules { get; set; }
 
         public FalloutRPContext(DbContextOptions options) : base(options)
@@ -15,10 +17,13 @@ namespace FalloutRPDAL
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
             builder.ApplyConfiguration(new PlayerConfig());
             builder.ApplyConfiguration(new RuleConfig());
 
+            LoadTeam(builder);
             LoadPlayer(builder);
+            LoadRule(builder);
         }
 
         private void LoadPlayer(ModelBuilder builder)
@@ -34,10 +39,38 @@ namespace FalloutRPDAL
                     Pseudo = "superviseur",
                     PasswordSalt = passwordSalt,
                     PasswordHash = passwordHash,
-                    Team = "admin"
-                }
+                    TeamId = 1,
+                },
+                new Player
+                {
+                    Id = 2,
+                    Pseudo = "player1",
+                    PasswordSalt = passwordSalt,
+                    PasswordHash = passwordHash,
+                    TeamId = 2,
+                },
             });
+        }
 
+        private void LoadTeam(ModelBuilder builder)
+        {
+            builder.Entity<Team>().HasData(new List<Team>
+            {
+                new Team
+                {
+                    Id = 1,
+                    Name = "admin",
+                },
+                new Team
+                {
+                    Id = 2,
+                    Name = "team1",
+                },
+            });
+        }
+
+            private void LoadRule(ModelBuilder builder)
+        { 
             builder.Entity<Rule>().HasData(new List<Rule>
             {
                 new Rule

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FalloutRPDAL.Entities.CharacterClasses
 {
-    internal class Skill
+    public class Skill
     {
         public int Id { get; set; }
         public bool RightHanded { get; set; }
@@ -30,7 +30,6 @@ namespace FalloutRPDAL.Entities.CharacterClasses
         public bool Explosive { get; set; }
 
         // Foreign Keys
-        public Character? Character { get; set; }
         public int CharacterId { get; set; }
     }
 }

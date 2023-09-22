@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FalloutRPDAL.Entities.CharacterClasses
 {
-    internal class Perk
+    public class Perk
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -14,7 +14,6 @@ namespace FalloutRPDAL.Entities.CharacterClasses
         public string Effect { get; set; } = string.Empty;
 
         // Foreign Keys
-        public Character? Character { get; set; }
         public int CharacterId { get; set; }
     }
 }

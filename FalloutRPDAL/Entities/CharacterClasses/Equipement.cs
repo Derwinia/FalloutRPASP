@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 
 namespace FalloutRPDAL.Entities.CharacterClasses
 {
-    internal class Equipement
+    public class Equipement
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public int Quantity { get; set; }
         public int Weight { get; set; }
         public int TotalWeight { get; set; }
 
         // Foreign Keys
-        public Inventory? Inventory { get; set; }
         public int InventoryId { get; set; }
     }
 }

@@ -30,7 +30,7 @@ namespace FalloutRP.Services
                 {
                     id = player.Id,
                     pseudo = player.Pseudo,
-                    team = player.Team,
+                    team = player.Team.Name,
                 });
             }
             return players;

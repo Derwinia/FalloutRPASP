@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace FalloutRPDAL.Entities
 {
-    public class Mission
+    public class Team
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public string ShortDescription { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
 
-        public IEnumerable<Player> Players { get; set; }
+        public IEnumerable<Player>? Players { get; set; }
     }
 }

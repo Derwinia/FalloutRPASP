@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FalloutRPDAL.Entities.CharacterClasses
 {
-    internal class Character
+    public class Character
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -28,10 +28,14 @@ namespace FalloutRPDAL.Entities.CharacterClasses
 
 
         // Foreign Keys
+        public int PlayerId { get; set; }
         public Skill? Skills { get; set; }
+        public int? SkillId { get; set; }
         public ICollection<BodyPart>? BodyParts { get; set; }
         public ICollection<Weapon>? Weapons { get; set; }
         public ICollection<Perk>? Perks { get; set; }
         public ICollection<Reputation>? Reputations { get; set; }
+        public Inventory? Inventory { get; set; }
+        public int? InventoryId { get; set; }
     }
 }

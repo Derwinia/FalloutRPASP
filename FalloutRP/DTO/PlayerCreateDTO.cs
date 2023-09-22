@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FalloutRPDAL.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace FalloutRP.DTO
 {
@@ -9,6 +10,6 @@ namespace FalloutRP.DTO
         [Required]
         public string password { get; set; } = string.Empty;
         [Required]
-        public string team { get; set; } = string.Empty;
+        public Team team { get; set; }
     }
 }

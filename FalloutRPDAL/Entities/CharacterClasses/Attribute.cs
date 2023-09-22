@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FalloutRPDAL.Entities.CharacterClasses
 {
-    internal class Attribute
+    public class Attribute
     {
         public int Id { get; set; }
         public int Strength { get; set; }
@@ -19,7 +19,6 @@ namespace FalloutRPDAL.Entities.CharacterClasses
         public int LuckPoints { get; set; }
 
         // Foreign Keys
-        public Character? Character { get; set; }
         public int CharacterId { get; set; }
     }
 }
