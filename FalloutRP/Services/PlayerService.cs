@@ -2,6 +2,7 @@
 using FalloutRPDAL;
 using FalloutRPDAL.Entities;
 using FalloutRPDAL.Services;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using System.Text;
@@ -28,9 +29,9 @@ namespace FalloutRP.Services
             {
                 players.Add(new PlayerDetailDTO()
                 {
-                    id = player.Id,
-                    pseudo = player.Pseudo,
-                    team = player.Team.Name,
+                    Id = player.Id,
+                    Pseudo = player.Pseudo,
+                    Team = player.Team.Name,
                 });
             }
             return players;
@@ -43,7 +44,7 @@ namespace FalloutRP.Services
         /// <returns>Player entity</returns>
         public Player? GetByUsername(string pseudo)
         {
-            return _falloutRPContext.Players.FirstOrDefault(u => u.Pseudo == pseudo);
+            return _falloutRPContext.Players.Include(t => t.Team).FirstOrDefault(u => u.Pseudo == pseudo);
         }
 
         /// <summary>
@@ -51,7 +52,7 @@ namespace FalloutRP.Services
         /// </summary>
         public void Add(PlayerCreateDTO playerCreateDTO)
         {
-            Player? player = _falloutRPContext.Players.FirstOrDefault(u => u.Pseudo == playerCreateDTO.pseudo);
+            Player? player = _falloutRPContext.Players.FirstOrDefault(u => u.Pseudo == playerCreateDTO.Pseudo);
 
             if (player != null)
             {
@@ -60,11 +61,11 @@ namespace FalloutRP.Services
 
             player = new Player()
             {
-                Pseudo = playerCreateDTO.pseudo,
-                Team = playerCreateDTO.team,
+                Pseudo = playerCreateDTO.Pseudo,
+                Team = playerCreateDTO.Team,
             };
 
-            PasswordService.CreatePasswordHash(playerCreateDTO.password, out byte[] passwordHash, out byte[] passwordSalt);
+            PasswordService.CreatePasswordHash(playerCreateDTO.Password, out byte[] passwordHash, out byte[] passwordSalt);
             player.PasswordSalt = passwordSalt;
             player.PasswordHash = passwordHash;
 
@@ -122,7 +123,7 @@ namespace FalloutRP.Services
         /// <exception cref="PasswordDoesNotMatchExeption"></exception>
         public void ChangePassword(PlayerChangePasswordDTO playerChangePasswordDTO)
         {
-            Player? player = _falloutRPContext.Players.FirstOrDefault(u => u.Id == playerChangePasswordDTO.id);
+            Player? player = _falloutRPContext.Players.FirstOrDefault(u => u.Id == playerChangePasswordDTO.Id);
 
             if (player == null)
             {

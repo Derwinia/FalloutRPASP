@@ -1,6 +1,7 @@
 ﻿using FalloutRPDAL.Entities;
 using FalloutRPDAL;
 using FalloutRP.DTO;
+using FalloutRPDAL.Services;
 
 namespace FalloutRP.Services
 {
@@ -16,21 +17,43 @@ namespace FalloutRP.Services
         /// Get a simple list of all rules
         /// </summary>
         /// <returns>List of rules</returns>
-        public IEnumerable<RuleSimpleDTO> GetAllRules()
+        public IEnumerable<Rule> GetAllRules()
         {
-            List<RuleSimpleDTO> Rules = new List<RuleSimpleDTO>();
+            List<Rule> Rules = new List<Rule>();
             List<Rule> RulesList = _falloutRPContext.Rules.ToList();
             foreach (Rule rule in RulesList)
             {
-                Rules.Add(new RuleSimpleDTO()
+                Rules.Add(new Rule()
                 {
                     Id = rule.Id,
                     Order = rule.Order,
                     Name = rule.Name,
                     ShortDescription = rule.ShortDescription,
+                    Description = rule.Description
                 });
             }
             return Rules;
+        }
+
+        /// <summary>
+        /// Update a rule
+        /// </summary>
+        /// <param name="ruleModifyDTO"></param>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public void UpdateRule(RuleModifyDTO ruleModifyDTO)
+        {
+            Rule? rule = _falloutRPContext.Rules.FirstOrDefault(u => u.Id == ruleModifyDTO.Id);
+
+            if (rule == null)
+            {
+                throw new KeyNotFoundException("Cet utilisateur n'existe pas");
+            }
+
+            rule.Name= ruleModifyDTO.Name;
+            rule.ShortDescription= ruleModifyDTO.ShortDescription;
+            rule.Description= ruleModifyDTO.Description;
+
+            _falloutRPContext.SaveChanges();
         }
     }
 }

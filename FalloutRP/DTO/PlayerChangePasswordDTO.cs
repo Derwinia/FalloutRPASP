@@ -5,7 +5,7 @@ namespace FalloutRP.DTO
     public class PlayerChangePasswordDTO
     {
         [Required]
-        public int id { get; set; }
+        public int Id { get; set; }
         [Required]
         public string NewPassword { get; set; } = string.Empty;
     }

@@ -6,10 +6,10 @@ namespace FalloutRP.DTO
     public class PlayerCreateDTO
     {
         [Required]
-        public string pseudo { get; set; } = string.Empty;
+        public string Pseudo { get; set; } = string.Empty;
         [Required]
-        public string password { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
         [Required]
-        public Team team { get; set; }
+        public Team Team { get; set; } = new Team();
     }
 }

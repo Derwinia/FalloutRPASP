@@ -21,14 +21,14 @@ namespace FalloutRP.Controllers
         [HttpPost("Login")]
         public IActionResult Login([FromBody] PlayerLoginDTO cmd)
         {
-            Player? player = _playerService.GetByUsername(cmd.pseudo);
+            Player? player = _playerService.GetByUsername(cmd.Pseudo);
 
-            if (player is null || !_playerService.VerifyPasswordHash(cmd.password, player.PasswordHash, player.PasswordSalt))
+            if (player is null || !_playerService.VerifyPasswordHash(cmd.Password, player.PasswordHash, player.PasswordSalt))
             {
                 return BadRequest("Pseudo ou mot de passe incorrect");
             }
 
-            return Ok(new { token = _tokenService.CreateToken(player), id = player.Id, username = player.Pseudo, role = player.Team });
+            return Ok(new { token = _tokenService.CreateToken(player), id = player.Id, username = player.Pseudo, role = player.Team.Name });
         }
 
         //Return a list of all Players

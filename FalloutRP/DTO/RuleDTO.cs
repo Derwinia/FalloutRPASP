@@ -1,6 +1,6 @@
 ﻿namespace FalloutRP.DTO
 {
-    public class RuleSimpleDTO
+    public class RuleDTO
     {
         public int Id { get; set; }
         public int Order { get; set; }
