@@ -1,6 +1,7 @@
 ﻿using FalloutRP.DTO;
 using FalloutRP.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace FalloutRP.Controllers
 {
@@ -15,8 +16,23 @@ namespace FalloutRP.Controllers
             _ruleService = ruleService;
         }
 
+        //Create a rule 
+        [HttpPost("Create-Rule")]
+        public IActionResult CreateRules([FromBody]RuleCreateDTO ruleCreateDTO)
+        {
+            try
+            {
+                _ruleService.CreateRules(ruleCreateDTO);
+                return NoContent();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         //Return a simple list of all rules 
-        [HttpGet("List")]
+        [HttpGet("List-Rule")]
         public IActionResult GetAllRules()
         {
             return Ok(_ruleService.GetAllRules());
@@ -29,6 +45,21 @@ namespace FalloutRP.Controllers
             try
             {
                 _ruleService.UpdateRule(ruleModifyDTO);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //Delete a rule
+        [HttpDelete("Delete-Rule/{id}")]
+        public IActionResult DeleteRule([FromRoute] string id)
+        {
+            try
+            {
+                _ruleService.DeleteRule(id);
                 return NoContent();
             }
             catch (Exception ex)

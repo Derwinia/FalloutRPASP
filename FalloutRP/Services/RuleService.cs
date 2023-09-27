@@ -2,6 +2,7 @@
 using FalloutRPDAL;
 using FalloutRP.DTO;
 using FalloutRPDAL.Services;
+using System.Diagnostics;
 
 namespace FalloutRP.Services
 {
@@ -11,6 +12,23 @@ namespace FalloutRP.Services
         public RuleService(FalloutRPContext falloutRPContext)
         {
             _falloutRPContext = falloutRPContext;
+        }
+
+        /// <summary>
+        /// Create a rule
+        /// </summary>
+        /// <param name="ruleCreateDTO"></param>
+
+        public void CreateRules(RuleCreateDTO ruleCreateDTO)
+        {
+            Rule newRule = new Rule { 
+                Order = GetAllRules().Count()+1,
+                Name= ruleCreateDTO.Name,
+                ShortDescription= ruleCreateDTO.ShortDescription,
+                Description= ruleCreateDTO.Description,
+            };
+            _falloutRPContext.Rules.Add(newRule);
+            _falloutRPContext.SaveChanges();
         }
 
         /// <summary>
@@ -52,6 +70,26 @@ namespace FalloutRP.Services
             rule.Name= ruleModifyDTO.Name;
             rule.ShortDescription= ruleModifyDTO.ShortDescription;
             rule.Description= ruleModifyDTO.Description;
+
+            _falloutRPContext.SaveChanges();
+        }
+
+        /// <summary>
+        /// Delete a rule
+        /// </summary>
+        /// <param name="id"></param>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public void DeleteRule(string id)
+        {
+            Debug.WriteLine("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"+id);
+            int idInt = int.Parse(id);
+            Rule? rule = _falloutRPContext.Rules.FirstOrDefault(u => u.Id == idInt);
+            if (rule == null)
+            {
+                throw new KeyNotFoundException("Cette règle n'existe pas");
+            }
+
+            _falloutRPContext.Rules.Remove(rule);
 
             _falloutRPContext.SaveChanges();
         }
