@@ -38,7 +38,7 @@ namespace FalloutRP.Services
         public IEnumerable<Rule> GetAllRules()
         {
             List<Rule> Rules = new List<Rule>();
-            List<Rule> RulesList = _falloutRPContext.Rules.ToList();
+            List<Rule> RulesList = _falloutRPContext.Rules.OrderBy(t=>t.Order).ToList();
             foreach (Rule rule in RulesList)
             {
                 Rules.Add(new Rule()
@@ -75,18 +75,66 @@ namespace FalloutRP.Services
         }
 
         /// <summary>
+        /// Update the rules orders
+        /// </summary>
+        /// <param name="ruleOrderDTO"></param>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public void UpdateRuleOrder(RuleOrderDTO ruleOrderDTO)
+        {
+            Rule[] rulesToChange;
+            if (ruleOrderDTO.PreviousOrder < ruleOrderDTO.CurrentOrder)
+            {
+                rulesToChange = _falloutRPContext.Rules.Where(r => r.Order >= ruleOrderDTO.PreviousOrder && r.Order <= ruleOrderDTO.CurrentOrder).ToArray();
+                if (rulesToChange == null)
+                {
+                    throw new KeyNotFoundException("Ces rêgles n'existent pas");
+                }
+                foreach (Rule ruleToChange in rulesToChange)
+                {
+                    if (ruleToChange.Order == ruleOrderDTO.PreviousOrder) ruleToChange.Order = ruleOrderDTO.CurrentOrder;
+                    else ruleToChange.Order--;
+                    _falloutRPContext.Update(ruleToChange);
+                }
+            }
+            else
+            {
+                rulesToChange = _falloutRPContext.Rules.Where(r => r.Order <= ruleOrderDTO.PreviousOrder && r.Order >= ruleOrderDTO.CurrentOrder).ToArray();
+                if (rulesToChange == null)
+                {
+                    throw new KeyNotFoundException("Ces rêgles n'existent pas");
+                }
+                foreach (Rule ruleToChange in rulesToChange)
+                {
+                    if (ruleToChange.Order == ruleOrderDTO.PreviousOrder) ruleToChange.Order = ruleOrderDTO.CurrentOrder;
+                    else ruleToChange.Order++;
+                    _falloutRPContext.Update(ruleToChange);
+                }
+            }
+            _falloutRPContext.SaveChanges();
+        }
+
+        /// <summary>
         /// Delete a rule
         /// </summary>
         /// <param name="id"></param>
         /// <exception cref="KeyNotFoundException"></exception>
         public void DeleteRule(string id)
         {
-            Debug.WriteLine("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"+id);
-            int idInt = int.Parse(id);
-            Rule? rule = _falloutRPContext.Rules.FirstOrDefault(u => u.Id == idInt);
+            Rule? rule = null;
+            if(int.TryParse(id, out int idInt))
+            {
+                rule = _falloutRPContext.Rules.FirstOrDefault(r => r.Id == idInt);
+            }
             if (rule == null)
             {
                 throw new KeyNotFoundException("Cette règle n'existe pas");
+            }
+
+            Rule[] rulesToChange = _falloutRPContext.Rules.Where(r => r.Order > rule.Order).ToArray();
+            foreach (Rule ruleToChange in rulesToChange)
+            {
+                ruleToChange.Order--;
+                _falloutRPContext.Update(ruleToChange);
             }
 
             _falloutRPContext.Rules.Remove(rule);

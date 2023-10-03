@@ -136,5 +136,25 @@ namespace FalloutRP.Services
 
             _falloutRPContext.SaveChanges();
         }
+
+        /// <summary>
+        /// Get a list of all the teams
+        /// </summary>
+        /// <returns>List of team</returns>
+        public IEnumerable<TeamDTO> GetAllTeam()
+        {
+            List<TeamDTO> teams = new List<TeamDTO>();
+            List<Team> teamList = _falloutRPContext.Teams.ToList();
+            foreach (Team team in teamList)
+            {
+                if(team.Name != "admin")
+                teams.Add(new TeamDTO()
+                {
+                    Name = team.Name,
+                });
+            }
+            return teams;
+
+        }
     }
 }

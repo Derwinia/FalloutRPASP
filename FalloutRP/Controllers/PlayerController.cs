@@ -82,5 +82,11 @@ namespace FalloutRP.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("List-Team")]
+        public IActionResult GetAllTeam()
+        {
+            return Ok(_playerService.GetAllTeam());
+        }
     }
 }

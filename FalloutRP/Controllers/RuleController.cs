@@ -53,6 +53,21 @@ namespace FalloutRP.Controllers
             }
         }
 
+        //Update the rules order
+        [HttpPatch("Update-Rule-Order")]
+        public IActionResult UpdateRuleOrder([FromBody] RuleOrderDTO ruleOrderDTO)
+        {
+            try
+            {
+                _ruleService.UpdateRuleOrder(ruleOrderDTO);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         //Delete a rule
         [HttpDelete("Delete-Rule/{id}")]
         public IActionResult DeleteRule([FromRoute] string id)
