@@ -83,10 +83,40 @@ namespace FalloutRP.Controllers
             }
         }
 
+        //Create a Team
+        [HttpPost("Create-Team")]
+        public IActionResult AddTeam([FromBody] TeamDTO teamDTO)
+        {
+            try
+            {
+                _playerService.AddTeam(teamDTO);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("List-Team")]
         public IActionResult GetAllTeam()
         {
             return Ok(_playerService.GetAllTeam());
+        }
+
+        //Delete a Team
+        [HttpDelete("Delete-Team/{team}")]
+        public IActionResult DeleteTeam([FromRoute] string team)
+        {
+            try
+            {
+                _playerService.DeleteTeam(team);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

@@ -17,39 +17,6 @@ namespace FalloutRP.Services
             _falloutRPContext = falloutRPContext;
         }
 
-        /// <summary>
-        /// Get a list of all the players
-        /// </summary>
-        /// <returns>List of player</returns>
-        public IEnumerable<PlayerDetailDTO> GetAllPlayer()
-        {
-            List<PlayerDetailDTO> players = new List<PlayerDetailDTO>();
-            List<Player> playerList = _falloutRPContext.Players.ToList();
-            foreach (Player player in playerList)
-            {
-                players.Add(new PlayerDetailDTO()
-                {
-                    Id = player.Id,
-                    Pseudo = player.Pseudo,
-                    Team = player.Team.Name,
-                });
-            }
-            return players;
-        }
-
-        /// <summary>
-        /// Get a Player entity by Pseudo
-        /// </summary>
-        /// <param name="Pseudo"></param>
-        /// <returns>Player entity</returns>
-        public Player? GetByUsername(string pseudo)
-        {
-            return _falloutRPContext.Players.Include(t => t.Team).FirstOrDefault(u => u.Pseudo == pseudo);
-        }
-
-        /// <summary>
-        /// Create user and hash password
-        /// </summary>
         public void Add(PlayerCreateDTO playerCreateDTO)
         {
             Player? player = _falloutRPContext.Players.FirstOrDefault(u => u.Pseudo == playerCreateDTO.Pseudo);
@@ -73,13 +40,27 @@ namespace FalloutRP.Services
             _falloutRPContext.SaveChanges();
         }
 
-        /// <summary>
-        /// Delete a user
-        /// The Belgrain user is the super administrator user, it cannot be deleted
-        /// </summary>
-        /// <param name="id"></param>
-        /// <exception cref="KeyNotFoundException"></exception>
-        /// <exception cref="ValidationException"></exception>
+        public IEnumerable<PlayerDetailDTO> GetAllPlayer()
+        {
+            List<PlayerDetailDTO> players = new List<PlayerDetailDTO>();
+            List<Player> playerList = _falloutRPContext.Players.ToList();
+            foreach (Player player in playerList)
+            {
+                players.Add(new PlayerDetailDTO()
+                {
+                    Id = player.Id,
+                    Pseudo = player.Pseudo,
+                    Team = player.Team.Name,
+                });
+            }
+            return players;
+        }
+
+        public Player? GetByUsername(string pseudo)
+        {
+            return _falloutRPContext.Players.Include(t => t.Team).FirstOrDefault(u => u.Pseudo == pseudo);
+        }
+
         public void Delete(int idToDelete)
         {
             Player? player = _falloutRPContext.Players.FirstOrDefault(p => p.Id == idToDelete);
@@ -94,17 +75,10 @@ namespace FalloutRP.Services
                 throw new ValidationException("Cet utilisateur ne peut pas être supprimé");
             }
 
-            _falloutRPContext.Remove(player);
+            _falloutRPContext.Players.Remove(player);
             _falloutRPContext.SaveChanges();
         }
 
-        /// <summary>
-        /// Check password hash
-        /// </summary>
-        /// <param name="password"></param>
-        /// <param name="passwordHash"></param>
-        /// <param name="passwordSalt"></param>
-        /// <returns>Boolean</returns>
         public bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
             using (HMACSHA512 hmca = new HMACSHA512(passwordSalt))
@@ -114,13 +88,6 @@ namespace FalloutRP.Services
             }
         }
 
-        /// <summary>
-        /// Change user password
-        /// </summary>
-        /// <param name="actorId"></param>
-        /// <param name="userChangePasswordDTO"></param>
-        /// <exception cref="KeyNotFoundException"></exception>
-        /// <exception cref="PasswordDoesNotMatchExeption"></exception>
         public void ChangePassword(PlayerChangePasswordDTO playerChangePasswordDTO)
         {
             Player? player = _falloutRPContext.Players.FirstOrDefault(u => u.Id == playerChangePasswordDTO.Id);
@@ -137,10 +104,24 @@ namespace FalloutRP.Services
             _falloutRPContext.SaveChanges();
         }
 
-        /// <summary>
-        /// Get a list of all the teams
-        /// </summary>
-        /// <returns>List of team</returns>
+        public void AddTeam(TeamDTO teamDTO)
+        {
+            Team? team = _falloutRPContext.Teams.FirstOrDefault(u => u.Name == teamDTO.Name);
+
+            if (team != null)
+            {
+                throw new Exception("Ce nom d'équipe est déjà utilisé");
+            }
+
+            team = new Team()
+            {
+                Name = teamDTO.Name,
+            };
+
+            _falloutRPContext.Teams.Add(team);
+            _falloutRPContext.SaveChanges();
+        }
+
         public IEnumerable<TeamDTO> GetAllTeam()
         {
             List<TeamDTO> teams = new List<TeamDTO>();
@@ -155,6 +136,24 @@ namespace FalloutRP.Services
             }
             return teams;
 
+        }
+
+        public void DeleteTeam(string teamToDelete)
+        {
+            Team? team = _falloutRPContext.Teams.FirstOrDefault(t => t.Name == teamToDelete);
+
+            if (team is null)
+            {
+                throw new KeyNotFoundException("La team n'a pas été trouvé");
+            }
+
+            if (team.Name.ToLower() == "admin")
+            {
+                throw new ValidationException("Cette team ne peut pas être supprimé");
+            }
+
+            _falloutRPContext.Teams.Remove(team);
+            _falloutRPContext.SaveChanges();
         }
     }
 }

@@ -14,11 +14,6 @@ namespace FalloutRP.Services
             _falloutRPContext = falloutRPContext;
         }
 
-        /// <summary>
-        /// Create a rule
-        /// </summary>
-        /// <param name="ruleCreateDTO"></param>
-
         public void CreateRules(RuleCreateDTO ruleCreateDTO)
         {
             Rule newRule = new Rule { 
@@ -31,10 +26,6 @@ namespace FalloutRP.Services
             _falloutRPContext.SaveChanges();
         }
 
-        /// <summary>
-        /// Get a simple list of all rules
-        /// </summary>
-        /// <returns>List of rules</returns>
         public IEnumerable<Rule> GetAllRules()
         {
             List<Rule> Rules = new List<Rule>();
@@ -53,11 +44,6 @@ namespace FalloutRP.Services
             return Rules;
         }
 
-        /// <summary>
-        /// Update a rule
-        /// </summary>
-        /// <param name="ruleModifyDTO"></param>
-        /// <exception cref="KeyNotFoundException"></exception>
         public void UpdateRule(RuleModifyDTO ruleModifyDTO)
         {
             Rule? rule = _falloutRPContext.Rules.FirstOrDefault(u => u.Id == ruleModifyDTO.Id);
@@ -74,11 +60,6 @@ namespace FalloutRP.Services
             _falloutRPContext.SaveChanges();
         }
 
-        /// <summary>
-        /// Update the rules orders
-        /// </summary>
-        /// <param name="ruleOrderDTO"></param>
-        /// <exception cref="KeyNotFoundException"></exception>
         public void UpdateRuleOrder(RuleOrderDTO ruleOrderDTO)
         {
             Rule[] rulesToChange;
@@ -113,11 +94,6 @@ namespace FalloutRP.Services
             _falloutRPContext.SaveChanges();
         }
 
-        /// <summary>
-        /// Delete a rule
-        /// </summary>
-        /// <param name="id"></param>
-        /// <exception cref="KeyNotFoundException"></exception>
         public void DeleteRule(string id)
         {
             Rule? rule = null;
