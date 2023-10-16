@@ -21,28 +21,19 @@ namespace FalloutRP.Services
             _config = config;
         }
 
-        /// <summary>
-        /// Create the token
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns>String</returns>
-        public string CreateToken(Player player)
+        public string TokenCreate(Player player)
         {
             JwtSecurityToken token = new JwtSecurityToken(
                 issuer: _config.Issuer,
-                claims: CreateClaims(player),
+                claims: ClaimsCreate(player),
                 expires: DateTime.Now.AddDays(10),
-                signingCredentials: CreateCredentials()
+                signingCredentials: CredentialsCreate()
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        /// <summary>
-        /// Create credentials
-        /// </summary>
-        /// <returns>SigningCredentials</returns>
-        private SigningCredentials CreateCredentials()
+        private SigningCredentials CredentialsCreate()
         {
             return new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.Signature)),
@@ -50,12 +41,7 @@ namespace FalloutRP.Services
             );
         }
 
-        /// <summary>
-        /// Create claims
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns>List of Claim</returns>
-        private IEnumerable<Claim> CreateClaims(Player player)
+        private IEnumerable<Claim> ClaimsCreate(Player player)
         {
             yield return new Claim(ClaimTypes.NameIdentifier, player.Id.ToString(), ClaimValueTypes.Integer);
             yield return new Claim(ClaimTypes.GivenName, player.Pseudo);

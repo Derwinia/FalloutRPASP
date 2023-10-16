@@ -24,18 +24,15 @@ namespace FalloutRPDAL.Entities.CharacterClasses
         public string Background { get; set; } = string.Empty;
         public int Caps { get; set; }
         public int MaxWeight { get; set; }
-        public int Weight { get; set; }
 
 
         // Foreign Keys
         public int PlayerId { get; set; }
-        public Skill? Skills { get; set; }
-        public int? SkillId { get; set; }
+        public Skill? Skill { get; set; }
         public ICollection<BodyPart>? BodyParts { get; set; }
         public ICollection<Weapon>? Weapons { get; set; }
         public ICollection<Perk>? Perks { get; set; }
         public ICollection<Reputation>? Reputations { get; set; }
         public Inventory? Inventory { get; set; }
-        public int? InventoryId { get; set; }
     }
 }

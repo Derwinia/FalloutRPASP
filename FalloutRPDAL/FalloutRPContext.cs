@@ -11,6 +11,23 @@ namespace FalloutRPDAL
         public DbSet<Player> Players { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Rule> Rules { get; set; }
+        public DbSet<Character> Characters { get; set; }
+        public DbSet<Data> Datas { get; set; }
+        public DbSet<Mission> Missions { get; set; }
+        public DbSet<Ammo> Ammos { get; set; }
+        public DbSet<Entities.CharacterClasses.Attribute> Attributes { get; set; }
+        public DbSet<BodyPart> BodyParts { get; set; }
+        public DbSet<Chemical> Chemicals { get; set; }
+        public DbSet<Drink> Drinks { get; set; }
+        public DbSet<Equipement> Equipements { get; set; }
+        public DbSet<Food> Foods { get; set; }
+        public DbSet<Inventory> Inventorys { get; set; }
+        public DbSet<Material> Materials { get; set; }
+        public DbSet<Perk> Perks { get; set; }
+        public DbSet<Reputation> Reputations { get; set; }
+        public DbSet<Skill> Skills { get; set; }
+        public DbSet<Weapon> Weapons { get; set; }
+
 
         public FalloutRPContext(DbContextOptions options) : base(options)
         {
@@ -24,11 +41,24 @@ namespace FalloutRPDAL
             LoadTeam(builder);
             LoadPlayer(builder);
             LoadRule(builder);
+            LoadCharacter(builder);
+            LoadBodyPart(builder);
+            LoadSkill(builder);
+            LoadReputation(builder);
+            LoadPerk(builder);
+            LoadInventory(builder);
+            LoadWeapon(builder);
+            LoadFood(builder);
+            LoadAmmo(builder);
+            LoadDrink(builder);
+            LoadEquipement(builder);
+            LoadMaterial(builder);
+            LoadChemical(builder);
         }
 
         private void LoadPlayer(ModelBuilder builder)
         {
-            PasswordService.CreatePasswordHash("mdp", out byte[] passwordHash, out byte[] passwordSalt);
+            PasswordService.PasswordHashCreate("mdp", out byte[] passwordHash, out byte[] passwordSalt);
 
 
             builder.Entity<Player>().HasData(new List<Player>
@@ -69,8 +99,8 @@ namespace FalloutRPDAL
             });
         }
 
-            private void LoadRule(ModelBuilder builder)
-        { 
+        private void LoadRule(ModelBuilder builder)
+        {
             builder.Entity<Rule>().HasData(new List<Rule>
             {
                 new Rule
@@ -96,6 +126,248 @@ namespace FalloutRPDAL
                     Name = "règle n°3",
                     ShortDescription = "petite description3",
                     Description = "longue description3"
+                }
+            });
+        }
+        private void LoadCharacter(ModelBuilder builder)
+        {
+            builder.Entity<Character>().HasData(new List<Character>
+            {
+                new Character
+                {
+                    Id = 1,
+                    Name = "perso 1",
+                    Xp = 0,
+                    XpToNext = 100, 
+                    Origin = "laba",
+                    Level = 1,
+                    MeleeBonus = 0,
+                    Defence = 0,
+                    Initiative = 0,
+                    HealthPoint = 10,
+                    HealthPointMax = 10,
+                    PoisonResilience = 0,
+                    Background = "sort du tuto",
+                    Caps = 100,
+                    MaxWeight = 120,
+                    PlayerId = 1,
+                }
+            });
+        }
+        private void LoadBodyPart(ModelBuilder builder)
+        {
+            builder.Entity<BodyPart>().HasData(new List<BodyPart>
+            {
+                new BodyPart
+                {
+                    Id = 1,
+                    Part = 1,
+                    PhysicalResilience = 1,
+                    RadiationResilience = 2,
+                    EnergyResilience = 3,
+                    HealthResilience = 4,
+                    CharacterId = 1,
+                },
+                new BodyPart
+                {
+                    Id = 2,
+                    Part = 2,
+                    PhysicalResilience = 4,
+                    RadiationResilience = 3,
+                    EnergyResilience = 2,
+                    HealthResilience = 1,
+                    CharacterId = 1,
+                }
+            });
+        }
+        private void LoadReputation(ModelBuilder builder)
+        {
+            builder.Entity<Reputation>().HasData(new List<Reputation>
+            {
+                new Reputation
+                {
+                    Id = 1,
+                    Name = "Humain",
+                    Rank = 3,
+                    CharacterId = 1,
+                },
+                new Reputation
+                {
+                    Id = 2,
+                    Name = "Goule",
+                    Rank = 1,
+                    CharacterId = 1,
+                }
+            });
+        }
+        private void LoadPerk(ModelBuilder builder)
+        {
+            builder.Entity<Perk>().HasData(new List<Perk>
+            {
+                new Perk
+                {
+                    Id = 1,
+                    Name = "tueur",
+                    Rank = 1,
+                    Effect = "Tue",
+                    CharacterId = 1,
+                },
+                new Perk
+                {
+                    Id = 2,
+                    Name = "beau parleur",
+                    Rank = 2,
+                    Effect = "Dit de joli mots",
+                    CharacterId = 1,
+                }
+            });
+        }
+        private void LoadWeapon(ModelBuilder builder)
+        {
+            builder.Entity<Weapon>().HasData(new List<Weapon>
+            {
+                new Weapon
+                {
+                    Id = 1,
+                    Name = "pistolet",
+                    TN = 1,
+                    DC = 1,
+                    PhysicalDamage = true,
+                    EnergyDamage = false,
+                    RadiationDamage = false,
+                    PoisonDamage = false,
+                    Effects = "none",
+                    Proprieties = "none",
+                    RateOfFire = 1,
+                    Range = 20,
+                    Ammo = 1,
+                    Weigth = 5,
+                    CharacterId = 1,
+                }
+            });
+        }
+        private void LoadSkill(ModelBuilder builder)
+        {
+            builder.Entity<Skill>().HasData(new List<Skill>
+            {
+                new Skill
+                {
+                    Id = 1,
+                    RightHanded = true,
+                    LeftHanded = false,
+                    Athletics = true,
+                    Lockpicking = false,
+                    Speech = false,
+                    Stealth =false,
+                    Medecine = false,
+                    Driving = false,
+                    Repair = false,
+                    Science = false,
+                    Survival = true,
+                    Bartering = false,
+                    BareHands = false,
+                    MeleeWeapon = false,
+                    LightWeapon = false,
+                    HeavyWeapon = false,
+                    EnergieWeapon = false,
+                    ThrowingWeapon = false,
+                    Explosive = false,
+                    CharacterId = 1,
+                }
+            });
+        }
+        private void LoadInventory(ModelBuilder builder)
+        {
+            builder.Entity<Inventory>().HasData(new List<Inventory>
+            {
+                new Inventory
+                {
+                    Id = 1,
+                    CharacterId = 1,
+                }
+            });
+        }
+        private void LoadFood(ModelBuilder builder)
+        {
+            builder.Entity<Food>().HasData(new List<Food>
+            {
+                new Food
+                {
+                    Id = 1,
+                    Name = "barre de chocolat",
+                    Quantity = 1,
+                    Weight = 1,
+                    InventoryId= 1,
+                }
+            });
+        }
+        private void LoadAmmo(ModelBuilder builder)
+        {
+            builder.Entity<Ammo>().HasData(new List<Ammo>
+            {
+                new Ammo
+                {
+                    Id = 1,
+                    Name = "9mm",
+                    Quantity = 1,
+                    Weight = 1,
+                    InventoryId= 1,
+                }
+            });
+        }
+        private void LoadDrink(ModelBuilder builder)
+        {
+            builder.Entity<Drink>().HasData(new List<Drink>
+            {
+                new Drink
+                {
+                    Id = 1,
+                    Name = "eau",
+                    Quantity = 1,
+                    Weight = 1,
+                    InventoryId= 1,
+                }
+            });
+        }
+        private void LoadEquipement(ModelBuilder builder)
+        {
+            builder.Entity<Equipement>().HasData(new List<Equipement>
+            {
+                new Equipement
+                {
+                    Id = 1,
+                    Name = "crochet",
+                    Quantity = 1,
+                    Weight = 1,
+                    InventoryId= 1,
+                }
+            });
+        }
+        private void LoadMaterial(ModelBuilder builder)
+        {
+            builder.Entity<Material>().HasData(new List<Material>
+            {
+                new Material
+                {
+                    Id = 1,
+                    Name = "metal",
+                    Quantity = 1,
+                    Weight = 1,
+                    InventoryId= 1,
+                }
+            });
+        }
+        private void LoadChemical(ModelBuilder builder)
+        {
+            builder.Entity<Chemical>().HasData(new List<Chemical>
+            {
+                new Chemical
+                {
+                    Id = 1,
+                    Name = "Soufre",
+                    Quantity = 1,
+                    Weight = 1,
+                    InventoryId= 1,
                 }
             });
         }

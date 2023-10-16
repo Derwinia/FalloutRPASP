@@ -18,5 +18,6 @@ namespace FalloutRPDAL.Entities.CharacterClasses
 
         // Foreign Keys
         public int CharacterId { get; set; }
+        public Character Character { get; set; }
     }
 }

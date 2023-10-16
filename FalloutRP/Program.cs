@@ -16,6 +16,7 @@ builder.Services.AddSingleton(config);
 
 builder.Services.AddScoped<PlayerService>();
 builder.Services.AddScoped<RuleService>();
+builder.Services.AddScoped<CharacterService>();
 
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<PasswordService>();

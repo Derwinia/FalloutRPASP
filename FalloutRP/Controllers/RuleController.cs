@@ -16,13 +16,12 @@ namespace FalloutRP.Controllers
             _ruleService = ruleService;
         }
 
-        //Create a rule 
-        [HttpPost("Create-Rule")]
-        public IActionResult CreateRules([FromBody]RuleCreateDTO ruleCreateDTO)
+        [HttpPost("Rule-Create")]
+        public IActionResult RuleCreate([FromBody]RuleCreateDTO ruleCreateDTO)
         {
             try
             {
-                _ruleService.CreateRules(ruleCreateDTO);
+                _ruleService.RuleCreate(ruleCreateDTO);
                 return NoContent();
             }
             catch (ValidationException ex)
@@ -31,20 +30,18 @@ namespace FalloutRP.Controllers
             }
         }
 
-        //Return a simple list of all rules 
-        [HttpGet("List-Rule")]
-        public IActionResult GetAllRules()
+        [HttpGet("Rule-List")]
+        public IActionResult RuleList()
         {
-            return Ok(_ruleService.GetAllRules());
+            return Ok(_ruleService.RuleList());
         }
 
-        //Update a rule
-        [HttpPatch("Update-Rule")]
-        public IActionResult UpdateRule([FromBody] RuleModifyDTO ruleModifyDTO)
+        [HttpPatch("Rule-Update")]
+        public IActionResult RuleUpdate([FromBody] RuleModifyDTO ruleModifyDTO)
         {
             try
             {
-                _ruleService.UpdateRule(ruleModifyDTO);
+                _ruleService.RuleUpdate(ruleModifyDTO);
                 return NoContent();
             }
             catch (Exception ex)
@@ -53,13 +50,12 @@ namespace FalloutRP.Controllers
             }
         }
 
-        //Update the rules order
-        [HttpPatch("Update-Rule-Order")]
-        public IActionResult UpdateRuleOrder([FromBody] RuleOrderDTO ruleOrderDTO)
+        [HttpPatch("Rule-Order-Update")]
+        public IActionResult RuleOrderUpdate([FromBody] RuleOrderDTO ruleOrderDTO)
         {
             try
             {
-                _ruleService.UpdateRuleOrder(ruleOrderDTO);
+                _ruleService.RuleOrderUpdate(ruleOrderDTO);
                 return NoContent();
             }
             catch (Exception ex)
@@ -68,13 +64,12 @@ namespace FalloutRP.Controllers
             }
         }
 
-        //Delete a rule
-        [HttpDelete("Delete-Rule/{id}")]
-        public IActionResult DeleteRule([FromRoute] string id)
+        [HttpDelete("Rule-Delete/{id}")]
+        public IActionResult RuleDelete([FromRoute] string id)
         {
             try
             {
-                _ruleService.DeleteRule(id);
+                _ruleService.RuleDelete(id);
                 return NoContent();
             }
             catch (Exception ex)

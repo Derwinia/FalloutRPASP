@@ -11,6 +11,8 @@ namespace FalloutRPDAL.Entities
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
 
-        public IEnumerable<Player>? Players { get; set; }
+        // Foreign Keys
+        public IEnumerable<Player> Players { get; set; } = new List<Player>();
+        public IEnumerable<Data> Datas { get; set; } = new List<Data>();
     }
 }

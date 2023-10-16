@@ -5,7 +5,7 @@ namespace FalloutRPDAL.Services
 {
     public class PasswordService
     {
-        public static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        public static void PasswordHashCreate(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (HMACSHA512 hmac = new HMACSHA512())
             {
@@ -13,5 +13,6 @@ namespace FalloutRPDAL.Services
                 passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             }
         }
+
     }
 }

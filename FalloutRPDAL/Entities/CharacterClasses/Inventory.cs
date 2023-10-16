@@ -11,12 +11,12 @@ namespace FalloutRPDAL.Entities.CharacterClasses
         public int Id { get; set; }
 
         // Foreign Keys
+        public int CharacterId { get; set; }
         public ICollection<Ammo>? Ammos { get; set; }
         public ICollection<Material>? Materials { get; set; }
         public ICollection<Drink>? Drinks { get; set; }
         public ICollection<Food>? Foods { get; set; }
         public ICollection<Chemical>? Chemicals { get; set; }
         public ICollection<Equipement>? Equipements { get; set; }
-        public int CharacterId { get; set; }
     }
 }

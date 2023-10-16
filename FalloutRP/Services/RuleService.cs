@@ -1,8 +1,6 @@
 ﻿using FalloutRPDAL.Entities;
 using FalloutRPDAL;
 using FalloutRP.DTO;
-using FalloutRPDAL.Services;
-using System.Diagnostics;
 
 namespace FalloutRP.Services
 {
@@ -14,10 +12,10 @@ namespace FalloutRP.Services
             _falloutRPContext = falloutRPContext;
         }
 
-        public void CreateRules(RuleCreateDTO ruleCreateDTO)
+        public void RuleCreate(RuleCreateDTO ruleCreateDTO)
         {
             Rule newRule = new Rule { 
-                Order = GetAllRules().Count()+1,
+                Order = RuleList().Count()+1,
                 Name= ruleCreateDTO.Name,
                 ShortDescription= ruleCreateDTO.ShortDescription,
                 Description= ruleCreateDTO.Description,
@@ -26,7 +24,7 @@ namespace FalloutRP.Services
             _falloutRPContext.SaveChanges();
         }
 
-        public IEnumerable<Rule> GetAllRules()
+        public IEnumerable<Rule> RuleList()
         {
             List<Rule> Rules = new List<Rule>();
             List<Rule> RulesList = _falloutRPContext.Rules.OrderBy(t=>t.Order).ToList();
@@ -44,7 +42,7 @@ namespace FalloutRP.Services
             return Rules;
         }
 
-        public void UpdateRule(RuleModifyDTO ruleModifyDTO)
+        public void RuleUpdate(RuleModifyDTO ruleModifyDTO)
         {
             Rule? rule = _falloutRPContext.Rules.FirstOrDefault(u => u.Id == ruleModifyDTO.Id);
 
@@ -60,7 +58,7 @@ namespace FalloutRP.Services
             _falloutRPContext.SaveChanges();
         }
 
-        public void UpdateRuleOrder(RuleOrderDTO ruleOrderDTO)
+        public void RuleOrderUpdate(RuleOrderDTO ruleOrderDTO)
         {
             Rule[] rulesToChange;
             if (ruleOrderDTO.PreviousOrder < ruleOrderDTO.CurrentOrder)
@@ -94,7 +92,7 @@ namespace FalloutRP.Services
             _falloutRPContext.SaveChanges();
         }
 
-        public void DeleteRule(string id)
+        public void RuleDelete(string id)
         {
             Rule? rule = null;
             if(int.TryParse(id, out int idInt))

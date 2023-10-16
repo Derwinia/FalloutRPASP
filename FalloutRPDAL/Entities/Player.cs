@@ -15,6 +15,5 @@ namespace FalloutRPDAL.Entities
         public int? TeamId { get; set; }
         public IEnumerable<Mission>? Missions { get; set;}
         public Character? Character { get; set; }
-        public int? CharacterId { get; set; }
     }
 }

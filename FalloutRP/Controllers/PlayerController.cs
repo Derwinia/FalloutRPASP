@@ -18,6 +18,54 @@ namespace FalloutRP.Controllers
             _tokenService = tokenService;
         }
 
+        [HttpPost("Player-Create")]
+        public IActionResult playerCreate([FromBody] PlayerCreateDTO playerCreateDTO)
+        {
+            try
+            {
+                _playerService.PlayerCreate(playerCreateDTO);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("Player-List")]
+        public IActionResult PlayerList()
+        {
+            return Ok(_playerService.PlayerList());
+        }
+
+        [HttpPatch("Password-Change")]
+        public IActionResult PasswordChange([FromBody] PlayerChangePasswordDTO playerPasswordChangeDTO)
+        {
+            try
+            {
+                _playerService.PasswordChange(playerPasswordChangeDTO);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("Player-Delete")]
+        public IActionResult PlayerDelete([FromBody] int id)
+        {
+            try
+            {
+                _playerService.PlayerDelete(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost("Login")]
         public IActionResult Login([FromBody] PlayerLoginDTO cmd)
         {
@@ -28,23 +76,15 @@ namespace FalloutRP.Controllers
                 return BadRequest("Pseudo ou mot de passe incorrect");
             }
 
-            return Ok(new { token = _tokenService.CreateToken(player), id = player.Id, username = player.Pseudo, role = player.Team.Name });
+            return Ok(new { token = _tokenService.TokenCreate(player), id = player.Id, username = player.Pseudo, role = player.Team.Name });
         }
 
-        //Return a list of all Players
-        [HttpGet("List")]
-        public IActionResult GetAllPlayer()
-        {
-            return Ok(_playerService.GetAllPlayer());
-        }
-
-        //Create a Player
-        [HttpPost("Create")]
-        public IActionResult Add([FromBody] PlayerCreateDTO playerCreateDTO)
+        [HttpPost("Team-Create")]
+        public IActionResult TeamCreate([FromBody] TeamDTO teamDTO)
         {
             try
             {
-                _playerService.Add(playerCreateDTO);
+                _playerService.TeamCreate(teamDTO);
                 return NoContent();
             }
             catch (Exception ex)
@@ -53,64 +93,18 @@ namespace FalloutRP.Controllers
             }
         }
 
-        //Change a Player's password
-        [HttpPatch("Change-Password")]
-        public IActionResult ChangePassword([FromBody] PlayerChangePasswordDTO playerChangePasswordDTO)
+        [HttpGet("Team-List")]
+        public IActionResult TeamList()
+        {
+            return Ok(_playerService.TeamList());
+        }
+
+        [HttpDelete("Team-Delete/{team}")]
+        public IActionResult TeamDelete([FromRoute] string team)
         {
             try
             {
-                _playerService.ChangePassword(playerChangePasswordDTO);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        //Delete a Player
-        [HttpDelete("Delete")]
-        public IActionResult Delete([FromBody] int id)
-        {
-            try
-            {
-                _playerService.Delete(id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        //Create a Team
-        [HttpPost("Create-Team")]
-        public IActionResult AddTeam([FromBody] TeamDTO teamDTO)
-        {
-            try
-            {
-                _playerService.AddTeam(teamDTO);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet("List-Team")]
-        public IActionResult GetAllTeam()
-        {
-            return Ok(_playerService.GetAllTeam());
-        }
-
-        //Delete a Team
-        [HttpDelete("Delete-Team/{team}")]
-        public IActionResult DeleteTeam([FromRoute] string team)
-        {
-            try
-            {
-                _playerService.DeleteTeam(team);
+                _playerService.TeamDelete(team);
                 return NoContent();
             }
             catch (Exception ex)

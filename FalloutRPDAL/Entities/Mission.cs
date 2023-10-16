@@ -13,6 +13,7 @@ namespace FalloutRPDAL.Entities
         public string ShortDescription { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
+        // Foreign Keys
         public IEnumerable<Player> Players { get; set; }
     }
 }

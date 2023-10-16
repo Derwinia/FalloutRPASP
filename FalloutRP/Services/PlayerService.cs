@@ -17,7 +17,7 @@ namespace FalloutRP.Services
             _falloutRPContext = falloutRPContext;
         }
 
-        public void Add(PlayerCreateDTO playerCreateDTO)
+        public void PlayerCreate(PlayerCreateDTO playerCreateDTO)
         {
             Player? player = _falloutRPContext.Players.FirstOrDefault(u => u.Pseudo == playerCreateDTO.Pseudo);
 
@@ -32,7 +32,7 @@ namespace FalloutRP.Services
                 Team = playerCreateDTO.Team,
             };
 
-            PasswordService.CreatePasswordHash(playerCreateDTO.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            PasswordService.PasswordHashCreate(playerCreateDTO.Password, out byte[] passwordHash, out byte[] passwordSalt);
             player.PasswordSalt = passwordSalt;
             player.PasswordHash = passwordHash;
 
@@ -40,10 +40,12 @@ namespace FalloutRP.Services
             _falloutRPContext.SaveChanges();
         }
 
-        public IEnumerable<PlayerDetailDTO> GetAllPlayer()
+        public IEnumerable<PlayerDetailDTO> PlayerList()
         {
             List<PlayerDetailDTO> players = new List<PlayerDetailDTO>();
-            List<Player> playerList = _falloutRPContext.Players.ToList();
+            List<Player> playerList = _falloutRPContext.Players
+                .Include(p => p.Team)
+                .ToList();
             foreach (Player player in playerList)
             {
                 players.Add(new PlayerDetailDTO()
@@ -61,7 +63,7 @@ namespace FalloutRP.Services
             return _falloutRPContext.Players.Include(t => t.Team).FirstOrDefault(u => u.Pseudo == pseudo);
         }
 
-        public void Delete(int idToDelete)
+        public void PlayerDelete(int idToDelete)
         {
             Player? player = _falloutRPContext.Players.FirstOrDefault(p => p.Id == idToDelete);
 
@@ -88,7 +90,7 @@ namespace FalloutRP.Services
             }
         }
 
-        public void ChangePassword(PlayerChangePasswordDTO playerChangePasswordDTO)
+        public void PasswordChange(PlayerChangePasswordDTO playerChangePasswordDTO)
         {
             Player? player = _falloutRPContext.Players.FirstOrDefault(u => u.Id == playerChangePasswordDTO.Id);
 
@@ -97,14 +99,14 @@ namespace FalloutRP.Services
                 throw new KeyNotFoundException("Cet utilisateur n'existe pas");
             }
 
-            PasswordService.CreatePasswordHash(playerChangePasswordDTO.NewPassword, out byte[] passwordHash, out byte[] passwordSalt);
+            PasswordService.PasswordHashCreate(playerChangePasswordDTO.NewPassword, out byte[] passwordHash, out byte[] passwordSalt);
             player.PasswordHash = passwordHash;
             player.PasswordSalt = passwordSalt;
 
             _falloutRPContext.SaveChanges();
         }
 
-        public void AddTeam(TeamDTO teamDTO)
+        public void TeamCreate(TeamDTO teamDTO)
         {
             Team? team = _falloutRPContext.Teams.FirstOrDefault(u => u.Name == teamDTO.Name);
 
@@ -122,7 +124,7 @@ namespace FalloutRP.Services
             _falloutRPContext.SaveChanges();
         }
 
-        public IEnumerable<TeamDTO> GetAllTeam()
+        public IEnumerable<TeamDTO> TeamList()
         {
             List<TeamDTO> teams = new List<TeamDTO>();
             List<Team> teamList = _falloutRPContext.Teams.ToList();
@@ -138,7 +140,7 @@ namespace FalloutRP.Services
 
         }
 
-        public void DeleteTeam(string teamToDelete)
+        public void TeamDelete(string teamToDelete)
         {
             Team? team = _falloutRPContext.Teams.FirstOrDefault(t => t.Name == teamToDelete);
 
