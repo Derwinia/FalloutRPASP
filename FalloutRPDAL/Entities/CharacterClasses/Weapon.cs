@@ -21,7 +21,7 @@ namespace FalloutRPDAL.Entities.CharacterClasses
         public int RateOfFire { get; set; }
         public int Range { get; set; }
         public int Ammo { get; set; }
-        public int Weigth { get; set; }
+        public float Weigth { get; set; }
 
         // Foreign Keys
         public int CharacterId { get; set; }

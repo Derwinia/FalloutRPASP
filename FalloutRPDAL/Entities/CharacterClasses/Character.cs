@@ -23,7 +23,7 @@ namespace FalloutRPDAL.Entities.CharacterClasses
         public int PoisonResilience { get; set; }
         public string Background { get; set; } = string.Empty;
         public int Caps { get; set; }
-        public int MaxWeight { get; set; }
+        public float MaxWeight { get; set; }
 
 
         // Foreign Keys

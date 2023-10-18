@@ -1,4 +1,6 @@
-﻿namespace FalloutRP.DTO
+﻿using FalloutRPDAL.Entities.CharacterClasses;
+
+namespace FalloutRP.DTO
 {
     public class CharacterDTO
     {
@@ -15,10 +17,14 @@
         public int PoisonResilience { get; set; }
         public string Background { get; set; } = string.Empty;
         public int Caps { get; set; }
-        public int MaxWeight { get; set; }
-        public int Weight { get; set; }
-        public List<BodyPartDTO> BodyParts { get; set; }
+        public float MaxWeight { get; set; }
+        public float Weight { get; set; }
         public SkillDTO Skills { get; set; }
+        public List<BodyPartDTO> BodyParts { get; set; } = new List<BodyPartDTO>();
+        public List<ReputationDTO> Reputations { get;set; } = new List<ReputationDTO>();   
+        public List<WeaponDTO> Weapons { get;set; } = new List<WeaponDTO>();
+        public List<PerkDTO> Perks { get;set; } = new List<PerkDTO>();
+        public InventoryDTO Inventories { get;set; }
     }
     public class BodyPartDTO
     {
@@ -50,4 +56,77 @@
         public bool ThrowingWeapon { get; set; }
         public bool Explosive { get; set; }
     }
+    public class ReputationDTO
+    {
+        public string Name { get; set; } = string.Empty;
+        public int Rank { get; set; }
+    }
+    public class WeaponDTO
+    {
+        public string Name { get; set; } = string.Empty;
+        public int TN { get; set; }
+        public int DC { get; set; }
+        public bool PhysicalDamage { get; set; }
+        public bool EnergyDamage { get; set; }
+        public bool RadiationDamage { get; set; }
+        public bool PoisonDamage { get; set; }
+        public string Effects { get; set; } = string.Empty;
+        public string Proprieties { get; set; } = string.Empty;
+        public int RateOfFire { get; set; }
+        public int Range { get; set; }
+        public int Ammo { get; set; }
+        public float Weigth { get; set; }
+    }
+    public class PerkDTO
+    {
+        public string Name { get; set; } = string.Empty;
+        public int Rank { get; set; }
+        public string Effect { get; set; } = string.Empty;
+    }
+    public class InventoryDTO
+    {
+        public List<AmmoDTO> Ammos { get; set; } = new List<AmmoDTO>();
+        public List<ChemicalDTO> Chemicals { get; set; } = new List<ChemicalDTO>();
+        public List<DrinkDTO> Drinks { get; set; } = new List<DrinkDTO>();
+        public List<EquipementDTO> Equipements { get; set; } = new List<EquipementDTO>();
+        public List<FoodDTO> Foods { get; set; } = new List<FoodDTO>();
+        public List<MaterialDTO> Materials { get; set; } = new List<MaterialDTO>();
+    }
+    public class AmmoDTO
+    {
+        public string Name { get; set; } = string.Empty;
+        public int Quantity { get; set; }
+        public float Weight { get; set; }
+    }
+    public class ChemicalDTO
+    {
+        public string Name { get; set; } = string.Empty;
+        public int Quantity { get; set; }
+        public float Weight { get; set; }
+    }
+    public class DrinkDTO
+    {
+        public string Name { get; set; } = string.Empty;
+        public int Quantity { get; set; }
+        public float Weight { get; set; }
+    }
+    public class EquipementDTO
+    {
+        public string Name { get; set; } = string.Empty;
+        public int Quantity { get; set; }
+        public float Weight { get; set; }
+    }
+    public class FoodDTO
+    {
+        public string Name { get; set; } = string.Empty;
+        public int Quantity { get; set; }
+        public float Weight { get; set; }
+    }
+    public class MaterialDTO
+    {
+        public string Name { get; set; } = string.Empty;
+        public int Quantity { get; set; }
+        public float Weight { get; set; }
+    }
+    
 }

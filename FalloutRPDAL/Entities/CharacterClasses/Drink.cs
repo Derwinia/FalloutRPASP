@@ -11,7 +11,7 @@ namespace FalloutRPDAL.Entities.CharacterClasses
         public int Id { get; set; }
         public string Name { get; set; }
         public int Quantity { get; set; }
-        public int Weight { get; set; }
+        public float Weight { get; set; }
 
         // Foreign Keys
         public int InventoryId { get; set; }
