@@ -19,13 +19,13 @@ namespace FalloutRP.DTO
         public int Caps { get; set; }
         public float MaxWeight { get; set; }
         public float Weight { get; set; }
-        public AttributeDTO Attributes { get; set; }
-        public SkillDTO Skills { get; set; }
+        public AttributeDTO Attributes { get; set; } = new AttributeDTO();
+        public SkillDTO Skills { get; set; } = new SkillDTO();
         public List<BodyPartDTO> BodyParts { get; set; } = new List<BodyPartDTO>();
         public List<ReputationDTO> Reputations { get;set; } = new List<ReputationDTO>();   
         public List<WeaponDTO> Weapons { get;set; } = new List<WeaponDTO>();
         public List<PerkDTO> Perks { get;set; } = new List<PerkDTO>();
-        public InventoryDTO Inventories { get;set; }
+        public InventoryDTO Inventories { get; set; } = new InventoryDTO();
     }
     public class AttributeDTO
     {

@@ -13,6 +13,14 @@ namespace FalloutRP.DTO
         public string Description { get; set; } = string.Empty;
     }
 
+    public class MissionGroupByTeamDTO
+    {
+        [Required]
+        public string Team { get; set; } = string.Empty;
+        [Required]
+        public IEnumerable<MissionDTO> Missions { get; set;} = new List<MissionDTO>();
+    }
+
     public class MissionCreateDTO
     {
         [Required]

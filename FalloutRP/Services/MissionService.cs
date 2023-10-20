@@ -3,6 +3,7 @@ using FalloutRPDAL;
 using FalloutRPDAL.Entities;
 using FalloutRPDAL.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace FalloutRP.Services
 {
@@ -19,9 +20,9 @@ namespace FalloutRP.Services
             
         }
 
-        public IEnumerable<MissionDTO> MissionListAll()
+        public IEnumerable<MissionGroupByTeamDTO> MissionListAll()
         {
-            List<MissionDTO> missions = new List<MissionDTO>();
+            List<MissionGroupByTeamDTO> missions = new List<MissionGroupByTeamDTO>();
 
             var missionList = _falloutRPContext.Missions
                 .Include(p => p.Players)
@@ -31,15 +32,23 @@ namespace FalloutRP.Services
             
             foreach (var teamMission in missionList)
             {
+                List<MissionDTO> missionsForTeam = new List<MissionDTO>();
                 foreach (var mission in teamMission)
                 {
-                    missions.Add(new MissionDTO()
+                    missionsForTeam.Add(new MissionDTO()
                     {
                         Name = mission.Name,
                         ShortDescription = mission.ShortDescription,
                         Description = mission.Description,
                     });
                 }
+
+                missions.Add(new MissionGroupByTeamDTO()
+                {
+                    Team = teamMission.Key.Name,
+                    Missions = missionsForTeam
+                });
+                
             }
             return missions;
         }
