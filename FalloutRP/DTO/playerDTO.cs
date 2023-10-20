@@ -23,7 +23,7 @@ namespace FalloutRP.DTO
         [Required]
         public string Password { get; set; } = string.Empty;
         [Required]
-        public Team Team { get; set; } = new Team();
+        public string Team { get; set; } = string.Empty;
     }
     public class PlayerChangePasswordDTO
     {

@@ -3,6 +3,7 @@ using FalloutRPDAL.Configs;
 using FalloutRPDAL.Entities;
 using FalloutRPDAL.Services;
 using FalloutRPDAL.Entities.CharacterClasses;
+using Attribute = FalloutRPDAL.Entities.CharacterClasses.Attribute;
 
 namespace FalloutRPDAL
 {
@@ -34,26 +35,26 @@ namespace FalloutRPDAL
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
-
             builder.ApplyConfiguration(new PlayerConfig());
             builder.ApplyConfiguration(new RuleConfig());
 
-            LoadTeam(builder);
             LoadPlayer(builder);
+            LoadTeam(builder);
             LoadRule(builder);
             LoadCharacter(builder);
-            LoadBodyPart(builder);
+            LoadAttribute(builder);
             LoadSkill(builder);
+            LoadBodyPart(builder);
             LoadReputation(builder);
             LoadPerk(builder);
-            LoadInventory(builder);
             LoadWeapon(builder);
-            LoadFood(builder);
+            LoadInventory(builder);
             LoadAmmo(builder);
+            LoadChemical(builder);
             LoadDrink(builder);
             LoadEquipement(builder);
+            LoadFood(builder);
             LoadMaterial(builder);
-            LoadChemical(builder);
         }
 
         private void LoadPlayer(ModelBuilder builder)
@@ -81,7 +82,6 @@ namespace FalloutRPDAL
                 },
             });
         }
-
         private void LoadTeam(ModelBuilder builder)
         {
             builder.Entity<Team>().HasData(new List<Team>
@@ -98,7 +98,6 @@ namespace FalloutRPDAL
                 },
             });
         }
-
         private void LoadRule(ModelBuilder builder)
         {
             builder.Entity<Rule>().HasData(new List<Rule>
@@ -151,6 +150,55 @@ namespace FalloutRPDAL
                     Caps = 100,
                     MaxWeight = 120,
                     PlayerId = 1,
+                }
+            });
+        }
+        private void LoadAttribute(ModelBuilder builder)
+        {
+            builder.Entity<Attribute>().HasData(new List<Attribute>
+            {
+                new Attribute
+                {
+                    Id = 1,
+                    Strength = 10,
+                    Perception = 11,
+                    Endurance = 12,
+                    Charisme = 13,
+                    Intelligence = 14,
+                    Agility = 15,
+                    Luck = 16,
+                    LuckPoints = 17,
+                    CharacterId = 1,
+                }
+            });
+        }
+        private void LoadSkill(ModelBuilder builder)
+        {
+            builder.Entity<Skill>().HasData(new List<Skill>
+            {
+                new Skill
+                {
+                    Id = 1,
+                    RightHanded = true,
+                    LeftHanded = false,
+                    Athletics = true,
+                    Lockpicking = false,
+                    Speech = false,
+                    Stealth =false,
+                    Medecine = false,
+                    Driving = false,
+                    Repair = false,
+                    Science = false,
+                    Survival = true,
+                    Bartering = false,
+                    BareHands = false,
+                    MeleeWeapon = false,
+                    LightWeapon = false,
+                    HeavyWeapon = false,
+                    EnergieWeapon = false,
+                    ThrowingWeapon = false,
+                    Explosive = false,
+                    CharacterId = 1,
                 }
             });
         }
@@ -246,36 +294,6 @@ namespace FalloutRPDAL
                 }
             });
         }
-        private void LoadSkill(ModelBuilder builder)
-        {
-            builder.Entity<Skill>().HasData(new List<Skill>
-            {
-                new Skill
-                {
-                    Id = 1,
-                    RightHanded = true,
-                    LeftHanded = false,
-                    Athletics = true,
-                    Lockpicking = false,
-                    Speech = false,
-                    Stealth =false,
-                    Medecine = false,
-                    Driving = false,
-                    Repair = false,
-                    Science = false,
-                    Survival = true,
-                    Bartering = false,
-                    BareHands = false,
-                    MeleeWeapon = false,
-                    LightWeapon = false,
-                    HeavyWeapon = false,
-                    EnergieWeapon = false,
-                    ThrowingWeapon = false,
-                    Explosive = false,
-                    CharacterId = 1,
-                }
-            });
-        }
         private void LoadInventory(ModelBuilder builder)
         {
             builder.Entity<Inventory>().HasData(new List<Inventory>
@@ -287,20 +305,6 @@ namespace FalloutRPDAL
                 }
             });
         }
-        private void LoadFood(ModelBuilder builder)
-        {
-            builder.Entity<Food>().HasData(new List<Food>
-            {
-                new Food
-                {
-                    Id = 1,
-                    Name = "barre de chocolat",
-                    Quantity = 1,
-                    Weight = 1,
-                    InventoryId= 1,
-                }
-            });
-        }
         private void LoadAmmo(ModelBuilder builder)
         {
             builder.Entity<Ammo>().HasData(new List<Ammo>
@@ -309,6 +313,20 @@ namespace FalloutRPDAL
                 {
                     Id = 1,
                     Name = "9mm",
+                    Quantity = 1,
+                    Weight = 1,
+                    InventoryId= 1,
+                }
+            });
+        }
+        private void LoadChemical(ModelBuilder builder)
+        {
+            builder.Entity<Chemical>().HasData(new List<Chemical>
+            {
+                new Chemical
+                {
+                    Id = 1,
+                    Name = "Soufre",
                     Quantity = 1,
                     Weight = 1,
                     InventoryId= 1,
@@ -343,6 +361,20 @@ namespace FalloutRPDAL
                 }
             });
         }
+        private void LoadFood(ModelBuilder builder)
+        {
+            builder.Entity<Food>().HasData(new List<Food>
+            {
+                new Food
+                {
+                    Id = 1,
+                    Name = "barre de chocolat",
+                    Quantity = 1,
+                    Weight = 1,
+                    InventoryId= 1,
+                }
+            });
+        }
         private void LoadMaterial(ModelBuilder builder)
         {
             builder.Entity<Material>().HasData(new List<Material>
@@ -351,20 +383,6 @@ namespace FalloutRPDAL
                 {
                     Id = 1,
                     Name = "metal",
-                    Quantity = 1,
-                    Weight = 1,
-                    InventoryId= 1,
-                }
-            });
-        }
-        private void LoadChemical(ModelBuilder builder)
-        {
-            builder.Entity<Chemical>().HasData(new List<Chemical>
-            {
-                new Chemical
-                {
-                    Id = 1,
-                    Name = "Soufre",
                     Quantity = 1,
                     Weight = 1,
                     InventoryId= 1,

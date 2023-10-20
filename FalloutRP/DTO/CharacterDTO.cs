@@ -19,6 +19,7 @@ namespace FalloutRP.DTO
         public int Caps { get; set; }
         public float MaxWeight { get; set; }
         public float Weight { get; set; }
+        public AttributeDTO Attributes { get; set; }
         public SkillDTO Skills { get; set; }
         public List<BodyPartDTO> BodyParts { get; set; } = new List<BodyPartDTO>();
         public List<ReputationDTO> Reputations { get;set; } = new List<ReputationDTO>();   
@@ -26,13 +27,16 @@ namespace FalloutRP.DTO
         public List<PerkDTO> Perks { get;set; } = new List<PerkDTO>();
         public InventoryDTO Inventories { get;set; }
     }
-    public class BodyPartDTO
+    public class AttributeDTO
     {
-        public int Part { get; set; }
-        public int PhysicalResilience { get; set; }
-        public int RadiationResilience { get; set; }
-        public int EnergyResilience { get; set; }
-        public int HealthResilience { get; set; }
+        public int Strength { get; set; }
+        public int Perception { get; set; }
+        public int Endurance { get; set; }
+        public int Charisme { get; set; }
+        public int Intelligence { get; set; }
+        public int Agility { get; set; }
+        public int Luck { get; set; }
+        public int LuckPoints { get; set; }
     }
     public class SkillDTO
     {
@@ -55,6 +59,14 @@ namespace FalloutRP.DTO
         public bool EnergieWeapon { get; set; }
         public bool ThrowingWeapon { get; set; }
         public bool Explosive { get; set; }
+    }
+    public class BodyPartDTO
+    {
+        public int Part { get; set; }
+        public int PhysicalResilience { get; set; }
+        public int RadiationResilience { get; set; }
+        public int EnergyResilience { get; set; }
+        public int HealthResilience { get; set; }
     }
     public class ReputationDTO
     {

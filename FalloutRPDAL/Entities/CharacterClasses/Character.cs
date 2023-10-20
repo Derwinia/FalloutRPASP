@@ -28,6 +28,7 @@ namespace FalloutRPDAL.Entities.CharacterClasses
 
         // Foreign Keys
         public int PlayerId { get; set; }
+        public Attribute? Attributes { get; set; }
         public Skill? Skill { get; set; }
         public ICollection<BodyPart>? BodyParts { get; set; }
         public ICollection<Weapon>? Weapons { get; set; }

@@ -26,15 +26,26 @@ namespace FalloutRP.Services
                 throw new Exception("Ce nom d'utilisateur est déjà utilisé");
             }
 
+            Team? team = _falloutRPContext.Teams.FirstOrDefault(t => t.Name == playerCreateDTO.Team);
+
+            if (team == null || team.Name == "admin")
+            {
+                throw new Exception("Ce nom d'équipe n'existe pas");
+            }
+
+            PasswordService.PasswordHashCreate(playerCreateDTO.Password, out byte[] passwordHash, out byte[] passwordSalt);
+
             player = new Player()
             {
                 Pseudo = playerCreateDTO.Pseudo,
-                Team = playerCreateDTO.Team,
+                Team = team,
+                PasswordSalt = passwordSalt,
+                PasswordHash = passwordHash,
+                Character = null,
             };
 
-            PasswordService.PasswordHashCreate(playerCreateDTO.Password, out byte[] passwordHash, out byte[] passwordSalt);
-            player.PasswordSalt = passwordSalt;
-            player.PasswordHash = passwordHash;
+            
+            
 
             _falloutRPContext.Players.Add(player);
             _falloutRPContext.SaveChanges();
@@ -48,12 +59,15 @@ namespace FalloutRP.Services
                 .ToList();
             foreach (Player player in playerList)
             {
-                players.Add(new PlayerDetailDTO()
+                if(player.Team.Name != "admin")
                 {
-                    Id = player.Id,
-                    Pseudo = player.Pseudo,
-                    Team = player.Team.Name,
-                });
+                    players.Add(new PlayerDetailDTO()
+                    {
+                        Id = player.Id,
+                        Pseudo = player.Pseudo,
+                        Team = player.Team.Name,
+                    });
+                }
             }
             return players;
         }

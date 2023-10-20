@@ -19,6 +19,7 @@ namespace FalloutRP.Services
 
 
             Character character = _falloutRPContext.Characters
+                .Include(a => a.Attributes)
                 .Include(s => s.Skill)
                 .Include(b => b.BodyParts)
                 .Include(r => r.Reputations)
@@ -200,6 +201,17 @@ namespace FalloutRP.Services
                 Background = character.Background,
                 Caps = character.Caps,
                 MaxWeight = character.MaxWeight,
+                Attributes = new AttributeDTO
+                {
+                    Strength = character.Attributes.Strength,
+                    Perception = character.Attributes.Perception,
+                    Endurance = character.Attributes.Endurance,
+                    Charisme = character.Attributes.Charisme,
+                    Intelligence = character.Attributes.Intelligence,
+                    Agility = character.Attributes.Agility,
+                    Luck = character.Attributes.Luck,
+                    LuckPoints = character.Attributes.LuckPoints,
+                },
                 Skills = new SkillDTO {
                     RightHanded = character.Skill.RightHanded,
                     LeftHanded = character.Skill.LeftHanded,
