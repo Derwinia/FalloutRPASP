@@ -14,6 +14,6 @@ namespace FalloutRPDAL.Entities
         public string Description { get; set; } = string.Empty;
 
         // Foreign Keys
-        public IEnumerable<Team> Teams { get; set; } = new List<Team>();
+        public IEnumerable<Team>? Teams { get; set; }
     }
 }

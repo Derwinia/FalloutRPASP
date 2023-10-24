@@ -17,7 +17,34 @@ namespace FalloutRP.Services
 
         public void MissionCreate(MissionCreateDTO missionCreateDTO)
         {
-            
+            Mission newMission = new Mission
+            {
+                Name = missionCreateDTO.Name,
+                ShortDescription = missionCreateDTO.ShortDescription,
+                Description = missionCreateDTO.Description,
+                Status = "en cours"
+                
+            };
+
+            List<Player> concernedPlayer = new List<Player>();
+
+            foreach (int playerId in missionCreateDTO.ConcernedPlayers)
+            {
+                Player player = _falloutRPContext.Players.FirstOrDefault(p => p.Id == playerId);
+                if (player != null)
+                {
+                    concernedPlayer.Add(player);
+                }
+                else
+                {
+                    throw new Exception("Joueur non trouvé");
+                }
+            }
+
+            newMission.Players = concernedPlayer;
+
+            _falloutRPContext.Missions.Add(newMission);
+            _falloutRPContext.SaveChanges();
         }
 
         public IEnumerable<MissionGroupByTeamDTO> MissionListAll()
@@ -40,6 +67,7 @@ namespace FalloutRP.Services
                         Name = mission.Name,
                         ShortDescription = mission.ShortDescription,
                         Description = mission.Description,
+                        Status = mission.Status,
                     });
                 }
 
@@ -49,6 +77,30 @@ namespace FalloutRP.Services
                     Missions = missionsForTeam
                 });
                 
+            }
+            return missions;
+        }
+
+        public IEnumerable<MissionDTO> MissionListOnePlayer(int idPlayer)
+        {
+            List<MissionDTO> missions = new List<MissionDTO>();
+
+            var player = _falloutRPContext.Players
+                .Include(p => p.Missions) 
+                .FirstOrDefault(p => p.Id == idPlayer);
+
+            if (player != null)
+            {
+                foreach (var mission in player.Missions)
+                {
+                    missions.Add(new MissionDTO()
+                    {
+                        Name = mission.Name,
+                        ShortDescription = mission.ShortDescription,
+                        Description = mission.Description,
+                        Status = mission.Status,
+                    });
+                }
             }
             return missions;
         }

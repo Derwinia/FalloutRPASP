@@ -11,6 +11,8 @@ namespace FalloutRP.DTO
         public string ShortDescription { get; set; } = string.Empty;
         [Required]
         public string Description { get; set; } = string.Empty;
+        [Required]
+        public string Status { get; set; } = string.Empty;
     }
 
     public class MissionGroupByTeamDTO
@@ -18,7 +20,7 @@ namespace FalloutRP.DTO
         [Required]
         public string Team { get; set; } = string.Empty;
         [Required]
-        public IEnumerable<MissionDTO> Missions { get; set;} = new List<MissionDTO>();
+        public List<MissionDTO> Missions { get; set;} = new List<MissionDTO>();
     }
 
     public class MissionCreateDTO
