@@ -18,6 +18,7 @@ builder.Services.AddScoped<PlayerService>();
 builder.Services.AddScoped<RuleService>();
 builder.Services.AddScoped<CharacterService>();
 builder.Services.AddScoped<MissionService>();
+builder.Services.AddScoped<DataService>();
 
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<PasswordService>();

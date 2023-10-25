@@ -41,5 +41,33 @@ namespace FalloutRP.Controllers
         {
             return Ok(_missionService.MissionListOnePlayer(id));
         }
+
+        [HttpPatch("Mission-Update")]
+        public IActionResult MissionUpdate([FromBody] MissionDTO missionDTO)
+        {
+            try
+            {
+                _missionService.MissionUpdate(missionDTO);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("Mission-Delete")]
+        public IActionResult MissionDelete([FromBody] int id)
+        {
+            try
+            {
+                _missionService.MissionDelete(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

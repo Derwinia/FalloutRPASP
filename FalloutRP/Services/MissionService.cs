@@ -3,6 +3,7 @@ using FalloutRPDAL;
 using FalloutRPDAL.Entities;
 using FalloutRPDAL.Services;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace FalloutRP.Services
@@ -64,6 +65,7 @@ namespace FalloutRP.Services
                 {
                     missionsForTeam.Add(new MissionDTO()
                     {
+                        Id = mission.Id,
                         Name = mission.Name,
                         ShortDescription = mission.ShortDescription,
                         Description = mission.Description,
@@ -95,6 +97,7 @@ namespace FalloutRP.Services
                 {
                     missions.Add(new MissionDTO()
                     {
+                        Id = mission.Id,
                         Name = mission.Name,
                         ShortDescription = mission.ShortDescription,
                         Description = mission.Description,
@@ -103,6 +106,36 @@ namespace FalloutRP.Services
                 }
             }
             return missions;
+        }
+
+        public void MissionUpdate(MissionDTO missionDTO)
+        {
+            Mission? mission = _falloutRPContext.Missions.FirstOrDefault(u => u.Id == missionDTO.Id);
+
+            if (mission == null)
+            {
+                throw new KeyNotFoundException("Cette mission n'existe pas");
+            }
+
+            mission.Name = missionDTO.Name;
+            mission.ShortDescription = missionDTO.ShortDescription;
+            mission.Description = missionDTO.Description;
+            mission.Status = missionDTO.Status;
+
+            _falloutRPContext.SaveChanges();
+        }
+
+        public void MissionDelete(int idToDelete)
+        {
+            Mission? mission = _falloutRPContext.Missions.FirstOrDefault(p => p.Id == idToDelete);
+
+            if (mission is null)
+            {
+                throw new KeyNotFoundException("La mission n'a pas été trouvé");
+            }
+
+            _falloutRPContext.Missions.Remove(mission);
+            _falloutRPContext.SaveChanges();
         }
     }
 }
