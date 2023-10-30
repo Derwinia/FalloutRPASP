@@ -50,7 +50,7 @@ namespace FalloutRP.Services
 
         public IEnumerable<MissionGroupByTeamDTO> MissionListAll()
         {
-            List<MissionGroupByTeamDTO> missions = new List<MissionGroupByTeamDTO>();
+            List<MissionGroupByTeamDTO> teamsMissions = new List<MissionGroupByTeamDTO>();
 
             var missionList = _falloutRPContext.Missions
                 .Include(p => p.Players)
@@ -60,32 +60,31 @@ namespace FalloutRP.Services
             
             foreach (var teamMission in missionList)
             {
-                List<MissionDTO> missionsForTeam = new List<MissionDTO>();
+                List<MissionSimpleDTO> missionsForTeam = new List<MissionSimpleDTO>();
                 foreach (var mission in teamMission)
                 {
-                    missionsForTeam.Add(new MissionDTO()
+                    missionsForTeam.Add(new MissionSimpleDTO()
                     {
                         Id = mission.Id,
                         Name = mission.Name,
                         ShortDescription = mission.ShortDescription,
-                        Description = mission.Description,
                         Status = mission.Status,
                     });
                 }
 
-                missions.Add(new MissionGroupByTeamDTO()
+                teamsMissions.Add(new MissionGroupByTeamDTO()
                 {
                     Team = teamMission.Key.Name,
                     Missions = missionsForTeam
                 });
                 
             }
-            return missions;
+            return teamsMissions;
         }
 
-        public IEnumerable<MissionDTO> MissionListOnePlayer(int idPlayer)
+        public IEnumerable<MissionDetailDTO> MissionListOnePlayer(int idPlayer)
         {
-            List<MissionDTO> missions = new List<MissionDTO>();
+            List<MissionDetailDTO> missions = new List<MissionDetailDTO>();
 
             var player = _falloutRPContext.Players
                 .Include(p => p.Missions) 
@@ -95,7 +94,7 @@ namespace FalloutRP.Services
             {
                 foreach (var mission in player.Missions)
                 {
-                    missions.Add(new MissionDTO()
+                    missions.Add(new MissionDetailDTO()
                     {
                         Id = mission.Id,
                         Name = mission.Name,
@@ -106,6 +105,38 @@ namespace FalloutRP.Services
                 }
             }
             return missions;
+        }
+
+        public MissionDTO MissionDetail(int idMission)
+        {
+            Mission? mission = _falloutRPContext.Missions
+                .Include(m => m.Players)
+                .FirstOrDefault(p => p.Id == idMission);
+
+            MissionDTO missionToSend = null;
+
+            if (mission != null)
+            {
+                List<int> listIdPlayer = new List<int>();
+                foreach(Player idPlayer in mission.Players)
+                {
+                    listIdPlayer.Add(idPlayer.Id);
+                }
+                missionToSend = new MissionDTO()
+                {
+                    Id = mission.Id,
+                    Name = mission.Name,
+                    ShortDescription = mission.ShortDescription,
+                    Description = mission.Description,
+                    Status = mission.Status,
+                    concernedPlayer = listIdPlayer
+                };
+            }
+            else
+            {
+                throw new Exception("Mission non trouvé");
+            }
+            return missionToSend;
         }
 
         public void MissionUpdate(MissionDTO missionDTO)

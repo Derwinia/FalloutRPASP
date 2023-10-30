@@ -42,6 +42,12 @@ namespace FalloutRP.Controllers
             return Ok(_missionService.MissionListOnePlayer(id));
         }
 
+        [HttpGet("Mission-Detail/{id}")]
+        public IActionResult MissionDetail([FromRoute] int id)
+        {
+            return Ok(_missionService.MissionDetail(id));
+        }
+
         [HttpPatch("Mission-Update")]
         public IActionResult MissionUpdate([FromBody] MissionDTO missionDTO)
         {

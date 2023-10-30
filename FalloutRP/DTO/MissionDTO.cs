@@ -15,6 +15,34 @@ namespace FalloutRP.DTO
         public string Description { get; set; } = string.Empty;
         [Required]
         public string Status { get; set; } = string.Empty;
+        [Required]
+        public List<int> concernedPlayer { get; set; } = new List<int>();
+    }
+
+    public class MissionSimpleDTO
+    {
+        [Key]
+        public int Id { get; set; }
+        [Required]
+        public string Name { get; set; } = string.Empty;
+        [Required]
+        public string ShortDescription { get; set; } = string.Empty;
+        [Required]
+        public string Status { get; set; } = string.Empty;
+    }
+
+    public class MissionDetailDTO
+    {
+        [Key]
+        public int Id { get; set; }
+        [Required]
+        public string Name { get; set; } = string.Empty;
+        [Required]
+        public string ShortDescription { get; set; } = string.Empty;
+        [Required]
+        public string Description { get; set; } = string.Empty;
+        [Required]
+        public string Status { get; set; } = string.Empty;
     }
 
     public class MissionGroupByTeamDTO
@@ -22,7 +50,7 @@ namespace FalloutRP.DTO
         [Required]
         public string Team { get; set; } = string.Empty;
         [Required]
-        public List<MissionDTO> Missions { get; set;} = new List<MissionDTO>();
+        public List<MissionSimpleDTO> Missions { get; set;} = new List<MissionSimpleDTO>();
     }
 
     public class MissionCreateDTO
