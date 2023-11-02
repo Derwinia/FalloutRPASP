@@ -14,6 +14,8 @@ namespace FalloutRP.DTO
         public int Initiative { get; set; }
         public int HealthPoint { get; set; }
         public int HealthPointMax { get; set; }
+        public int MentalHealthPoint { get; set; }
+        public int MentalHealthPointMax { get; set; }
         public int PoisonResilience { get; set; }
         public string Background { get; set; } = string.Empty;
         public int Caps { get; set; }
@@ -159,5 +161,9 @@ namespace FalloutRP.DTO
         public int Quantity { get; set; }
         public float Weight { get; set; }
     }
-    
+    public class CharacterName
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+    }
 }

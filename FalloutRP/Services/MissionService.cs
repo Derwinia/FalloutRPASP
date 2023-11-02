@@ -4,6 +4,7 @@ using FalloutRPDAL.Entities;
 using FalloutRPDAL.Services;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace FalloutRP.Services
@@ -18,73 +19,95 @@ namespace FalloutRP.Services
 
         public void MissionCreate(MissionCreateDTO missionCreateDTO)
         {
-            Mission newMission = new Mission
-            {
-                Name = missionCreateDTO.Name,
-                ShortDescription = missionCreateDTO.ShortDescription,
-                Description = missionCreateDTO.Description,
-                Status = "en cours"
-                
-            };
-
-            List<Player> concernedPlayer = new List<Player>();
-
-            foreach (int playerId in missionCreateDTO.ConcernedPlayers)
-            {
-                Player player = _falloutRPContext.Players.FirstOrDefault(p => p.Id == playerId);
-                if (player != null)
+            if (missionCreateDTO != null) {
+                Mission newMission = new Mission
                 {
-                    concernedPlayer.Add(player);
-                }
-                else
+                    Name = missionCreateDTO.Name,
+                    ShortDescription = missionCreateDTO.ShortDescription,
+                    Description = missionCreateDTO.Description,
+                    Status = "en cours"
+
+                };
+                if (missionCreateDTO.ConcernedPlayers.Count() > 0)
                 {
-                    throw new Exception("Joueur non trouvé");
+                    List<Player> concernedPlayer = new List<Player>();
+
+                    foreach (CharacterName character in missionCreateDTO.ConcernedPlayers)
+                    {
+                        Player player = _falloutRPContext.Players.FirstOrDefault(p => p.Character.Id == character.Id);
+                        if (player != null)
+                        {
+                            concernedPlayer.Add(player);
+                        }
+                        else
+                        {
+                            throw new Exception("Joueur non trouvé");
+                        }
+                    }
+
+                    newMission.Players = concernedPlayer;
+
+                    _falloutRPContext.Missions.Add(newMission);
+                    _falloutRPContext.SaveChanges();
                 }
+                else throw new Exception("Aucun joueur a été attribué a cette mission");
             }
-
-            newMission.Players = concernedPlayer;
-
-            _falloutRPContext.Missions.Add(newMission);
-            _falloutRPContext.SaveChanges();
         }
 
         public IEnumerable<MissionGroupByTeamDTO> MissionListAll()
         {
-            List<MissionGroupByTeamDTO> teamsMissions = new List<MissionGroupByTeamDTO>();
+            List<MissionGroupByTeamDTO> teams = new List<MissionGroupByTeamDTO>();
 
-            var missionList = _falloutRPContext.Missions
+            var missionsGroupByTeams = _falloutRPContext.Missions
                 .Include(p => p.Players)
                 .ThenInclude(t => t.Team)
+                .Include(p => p.Players)
+                .ThenInclude(t => t.Character)
                 .ToList()
                 .GroupBy(m => m.Players.FirstOrDefault()?.Team);
             
-            foreach (var teamMission in missionList)
+            foreach (var team in missionsGroupByTeams)
             {
-                List<MissionSimpleDTO> missionsForTeam = new List<MissionSimpleDTO>();
-                foreach (var mission in teamMission)
+                List<MissionDTO> missionsForTeam = new List<MissionDTO>();
+                foreach (var mission in team)
                 {
-                    missionsForTeam.Add(new MissionSimpleDTO()
+                    
+                    List<CharacterName> concernedPlayer = new List<CharacterName>();
+                    foreach (var player in mission.Players)
+                    {
+                        if(player.Character != null)
+                        {
+                            concernedPlayer.Add(new CharacterName()
+                            {
+                                Id = player.Character.Id,
+                                Name = player.Character.Name,
+                            });
+                        }
+                    }
+                    missionsForTeam.Add(new MissionDTO()
                     {
                         Id = mission.Id,
                         Name = mission.Name,
                         ShortDescription = mission.ShortDescription,
+                        Description = mission.Description,
                         Status = mission.Status,
+                        ConcernedPlayer = concernedPlayer,
                     });
                 }
 
-                teamsMissions.Add(new MissionGroupByTeamDTO()
+                teams.Add(new MissionGroupByTeamDTO()
                 {
-                    Team = teamMission.Key.Name,
+                    Team = team.Key.Name,
                     Missions = missionsForTeam
                 });
                 
             }
-            return teamsMissions;
+            return teams;
         }
 
-        public IEnumerable<MissionDetailDTO> MissionListOnePlayer(int idPlayer)
+        public IEnumerable<MissionForPlayerDTO> MissionListOnePlayer(int idPlayer)
         {
-            List<MissionDetailDTO> missions = new List<MissionDetailDTO>();
+            List<MissionForPlayerDTO> missions = new List<MissionForPlayerDTO>();
 
             var player = _falloutRPContext.Players
                 .Include(p => p.Missions) 
@@ -94,7 +117,7 @@ namespace FalloutRP.Services
             {
                 foreach (var mission in player.Missions)
                 {
-                    missions.Add(new MissionDetailDTO()
+                    missions.Add(new MissionForPlayerDTO()
                     {
                         Id = mission.Id,
                         Name = mission.Name,
@@ -105,38 +128,6 @@ namespace FalloutRP.Services
                 }
             }
             return missions;
-        }
-
-        public MissionDTO MissionDetail(int idMission)
-        {
-            Mission? mission = _falloutRPContext.Missions
-                .Include(m => m.Players)
-                .FirstOrDefault(p => p.Id == idMission);
-
-            MissionDTO missionToSend = null;
-
-            if (mission != null)
-            {
-                List<int> listIdPlayer = new List<int>();
-                foreach(Player idPlayer in mission.Players)
-                {
-                    listIdPlayer.Add(idPlayer.Id);
-                }
-                missionToSend = new MissionDTO()
-                {
-                    Id = mission.Id,
-                    Name = mission.Name,
-                    ShortDescription = mission.ShortDescription,
-                    Description = mission.Description,
-                    Status = mission.Status,
-                    concernedPlayer = listIdPlayer
-                };
-            }
-            else
-            {
-                throw new Exception("Mission non trouvé");
-            }
-            return missionToSend;
         }
 
         public void MissionUpdate(MissionDTO missionDTO)

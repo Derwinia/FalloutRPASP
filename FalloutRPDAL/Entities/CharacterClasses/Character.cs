@@ -20,6 +20,8 @@ namespace FalloutRPDAL.Entities.CharacterClasses
         public int Initiative { get; set; }
         public int HealthPoint { get; set; }
         public int HealthPointMax { get; set; }
+        public int MentalHealthPoint { get; set; }
+        public int MentalHealthPointMax { get; set; }
         public int PoisonResilience { get; set; }
         public string Background { get; set; } = string.Empty;
         public int Caps { get; set; }

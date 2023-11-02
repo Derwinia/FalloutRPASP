@@ -197,6 +197,8 @@ namespace FalloutRP.Services
                 Initiative = character.Initiative,
                 HealthPoint = character.HealthPoint,
                 HealthPointMax = character.HealthPointMax,
+                MentalHealthPoint = character.MentalHealthPoint,
+                MentalHealthPointMax = character.MentalHealthPointMax,
                 PoisonResilience = character.PoisonResilience,
                 Background = character.Background,
                 Caps = character.Caps,
@@ -266,6 +268,37 @@ namespace FalloutRP.Services
                 }
             };
             return characterDTO;
+        }
+
+        public IEnumerable<CharacterName>? CharacterListForATeam(string name)
+        {
+            List<CharacterName> characterList = new List<CharacterName>();
+            List<Player> players = _falloutRPContext.Players
+                .Include(p => p.Team)
+                .Include(p => p.Character)
+                .Where(p => p.Team.Name == name)
+                .ToList();
+
+            if (players.Count == 0)
+            {
+                throw new Exception("Cette équipe n'existe pas ou ne possède pas de joueur");
+            }
+            else
+            {
+                foreach (Player player in players)
+                {
+                    if(player.Character != null)
+                    {
+                        CharacterName characterName = new CharacterName
+                        {
+                            Id = player.Character.Id,
+                            Name = player.Character.Name,
+                        };
+                        characterList.Add(characterName);
+                    }
+                }
+                return characterList;
+            }
         }
     }
 }

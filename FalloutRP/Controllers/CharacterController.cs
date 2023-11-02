@@ -19,5 +19,11 @@ namespace FalloutRP.Controllers
         {
             return Ok(_characterService.CharacterGetById(id));
         }
+
+        [HttpGet("Character-List-For-A-Team/{name}")]
+        public IActionResult CharacterListForATeam([FromRoute]string name)
+        {
+            return Ok(_characterService.CharacterListForATeam(name));
+        }
     }
 }
