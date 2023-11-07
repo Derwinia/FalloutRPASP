@@ -36,7 +36,27 @@ namespace FalloutRP.Services
                     Order = rule.Order,
                     Name = rule.Name,
                     ShortDescription = rule.ShortDescription,
-                    Description = rule.Description
+                    Description = rule.Description,
+                    IsFolder= rule.IsFolder,
+                });
+            }
+            return Rules;
+        }
+
+        public IEnumerable<Rule> RuleFromPath(string path)
+        {
+            List<Rule> Rules = new List<Rule>();
+            List<Rule> RulesList = _falloutRPContext.Rules.Where(x => x.Path == path).OrderBy(t => t.Order).ToList();
+            foreach (Rule rule in RulesList)
+            {
+                Rules.Add(new Rule()
+                {
+                    Id = rule.Id,
+                    Order = rule.Order,
+                    Name = rule.Name,
+                    ShortDescription = rule.ShortDescription,
+                    Description = rule.Description,
+                    IsFolder= rule.IsFolder,
                 });
             }
             return Rules;

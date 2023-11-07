@@ -36,6 +36,13 @@ namespace FalloutRP.Controllers
             return Ok(_ruleService.RuleList());
         }
 
+        [HttpGet("Rule-From-Path/{path}")]
+        public IActionResult RuleFromPath([FromRoute] string path)
+        {
+            return Ok(_ruleService.RuleFromPath(path));
+        }
+        
+
         [HttpPatch("Rule-Update")]
         public IActionResult RuleUpdate([FromBody] RuleModifyDTO ruleModifyDTO)
         {
