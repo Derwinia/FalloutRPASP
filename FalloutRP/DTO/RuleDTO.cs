@@ -19,6 +19,8 @@
         public string Name { get; set; } = string.Empty;
         public string ShortDescription { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public string Path { get; set; } = string.Empty;
+        public Boolean IsFolder { get; set; }
     }
     public class RuleOrderDTO
     {

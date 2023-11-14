@@ -14,33 +14,34 @@ namespace FalloutRP.Services
 
         public void RuleCreate(RuleCreateDTO ruleCreateDTO)
         {
-            Rule newRule = new Rule { 
-                Order = RuleList().Count()+1,
-                Name= ruleCreateDTO.Name,
-                ShortDescription= ruleCreateDTO.ShortDescription,
-                Description= ruleCreateDTO.Description,
-            };
+            Rule newRule;
+            if (ruleCreateDTO.IsFolder)
+            {
+                newRule = new Rule
+                {
+                    Order = 0,
+                    Name = ruleCreateDTO.Name,
+                    ShortDescription = ruleCreateDTO.ShortDescription,
+                    Description = ruleCreateDTO.Description,
+                    Path = ruleCreateDTO.Path,
+                    IsFolder = true,
+                };
+            }
+            else
+            {
+                List<Rule> rulesList = _falloutRPContext.Rules.Where(x => x.Path == ruleCreateDTO.Path && x.IsFolder == false).ToList();
+                newRule = new Rule
+                {
+                    Order = rulesList.Count() + 1,
+                    Name = ruleCreateDTO.Name,
+                    ShortDescription = ruleCreateDTO.ShortDescription,
+                    Description = ruleCreateDTO.Description,
+                    Path = ruleCreateDTO.Path,
+                    IsFolder = ruleCreateDTO.IsFolder,
+                };
+            }
             _falloutRPContext.Rules.Add(newRule);
             _falloutRPContext.SaveChanges();
-        }
-
-        public IEnumerable<Rule> RuleList()
-        {
-            List<Rule> Rules = new List<Rule>();
-            List<Rule> RulesList = _falloutRPContext.Rules.OrderBy(t=>t.Order).ToList();
-            foreach (Rule rule in RulesList)
-            {
-                Rules.Add(new Rule()
-                {
-                    Id = rule.Id,
-                    Order = rule.Order,
-                    Name = rule.Name,
-                    ShortDescription = rule.ShortDescription,
-                    Description = rule.Description,
-                    IsFolder= rule.IsFolder,
-                });
-            }
-            return Rules;
         }
 
         public IEnumerable<Rule> RuleFromPath(string path)
@@ -80,6 +81,7 @@ namespace FalloutRP.Services
 
         public void RuleOrderUpdate(RuleOrderDTO ruleOrderDTO)
         {
+            if(ruleOrderDTO.PreviousOrder == 0) { return; }
             Rule[] rulesToChange;
             if (ruleOrderDTO.PreviousOrder < ruleOrderDTO.CurrentOrder)
             {
