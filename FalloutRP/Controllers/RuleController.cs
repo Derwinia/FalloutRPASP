@@ -30,6 +30,20 @@ namespace FalloutRP.Controllers
             }
         }
 
+        [HttpPost("Rule-Folder-Create")]
+        public IActionResult RuleFolderCreate([FromBody] RuleFolderCreateDTO ruleFolderCreateDTO)
+        {
+            try
+            {
+                _ruleService.RuleFolderCreate(ruleFolderCreateDTO);
+                return NoContent();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("Rule-From-Path/{path}")]
         public IActionResult RuleFromPath([FromRoute] string path)
         {

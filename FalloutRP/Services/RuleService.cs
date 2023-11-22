@@ -14,32 +14,30 @@ namespace FalloutRP.Services
 
         public void RuleCreate(RuleCreateDTO ruleCreateDTO)
         {
-            Rule newRule;
-            if (ruleCreateDTO.IsFolder)
+            List<Rule> rulesList = _falloutRPContext.Rules.Where(x => x.Path == ruleCreateDTO.Path && x.IsFolder == false).ToList();
+            Rule newRule = new Rule
             {
-                newRule = new Rule
-                {
-                    Order = 0,
-                    Name = ruleCreateDTO.Name,
-                    ShortDescription = ruleCreateDTO.ShortDescription,
-                    Description = ruleCreateDTO.Description,
-                    Path = ruleCreateDTO.Path,
-                    IsFolder = true,
-                };
-            }
-            else
+                Order = rulesList.Count() + 1,
+                Name = ruleCreateDTO.Name,
+                ShortDescription = ruleCreateDTO.ShortDescription,
+                Description = ruleCreateDTO.Description,
+                Path = ruleCreateDTO.Path,
+                IsFolder = false,
+            };
+            _falloutRPContext.Rules.Add(newRule);
+            _falloutRPContext.SaveChanges();
+        }
+
+        public void RuleFolderCreate(RuleFolderCreateDTO ruleFolderCreateDTO)
+        {
+            Rule newRule = new Rule
             {
-                List<Rule> rulesList = _falloutRPContext.Rules.Where(x => x.Path == ruleCreateDTO.Path && x.IsFolder == false).ToList();
-                newRule = new Rule
-                {
-                    Order = rulesList.Count() + 1,
-                    Name = ruleCreateDTO.Name,
-                    ShortDescription = ruleCreateDTO.ShortDescription,
-                    Description = ruleCreateDTO.Description,
-                    Path = ruleCreateDTO.Path,
-                    IsFolder = ruleCreateDTO.IsFolder,
-                };
-            }
+                Order = 0,
+                Name = ruleFolderCreateDTO.Name,
+                ShortDescription = ruleFolderCreateDTO.ShortDescription,
+                Path = ruleFolderCreateDTO.Path,
+                IsFolder = true,
+            };
             _falloutRPContext.Rules.Add(newRule);
             _falloutRPContext.SaveChanges();
         }
