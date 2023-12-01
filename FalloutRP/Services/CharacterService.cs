@@ -16,8 +16,6 @@ namespace FalloutRP.Services
         }
         public CharacterDTO? CharacterGetById(int id)
         {
-
-
             Character character = _falloutRPContext.Characters
                 .Include(a => a.Attributes)
                 .Include(s => s.Skill)
@@ -270,13 +268,287 @@ namespace FalloutRP.Services
             return characterDTO;
         }
 
-        public IEnumerable<CharacterName>? CharacterListForATeam(string name)
+        public CharacterDTO? CharacterGetByPseudo(string pseudo)
+        {
+            Player player = _falloutRPContext.Players.FirstOrDefault(p => p.Pseudo == pseudo);
+
+            if (player == null)
+            {
+                throw new KeyNotFoundException("Joueur introuvable");
+            }
+
+            Character character = _falloutRPContext.Characters
+                .Include(a => a.Attributes)
+                .Include(s => s.Skill)
+                .Include(b => b.BodyParts)
+                .Include(r => r.Reputations)
+                .Include(w => w.Weapons)
+                .Include(p => p.Perks)
+                .Include(i => i.Inventory)
+                .ThenInclude(a => a.Ammos)
+                .Include(i => i.Inventory)
+                .ThenInclude(c => c.Chemicals)
+                .Include(i => i.Inventory)
+                .ThenInclude(d => d.Drinks)
+                .Include(i => i.Inventory)
+                .ThenInclude(e => e.Equipements)
+                .Include(i => i.Inventory)
+                .ThenInclude(f => f.Foods)
+                .Include(i => i.Inventory)
+                .ThenInclude(m => m.Materials)
+                .FirstOrDefault(c => c.PlayerId == player.Id);
+
+            if (character == null)
+            {
+                throw new KeyNotFoundException("Cet utilisateur n'a pas de personnage ?");
+            }
+
+            List<BodyPartDTO> bodyParts = character.BodyParts
+                .Select(bodypart => new BodyPartDTO
+                {
+                    Id = bodypart.Id,
+                    Part = bodypart.Part,
+                    PhysicalResilience = bodypart.PhysicalResilience,
+                    RadiationResilience = bodypart.RadiationResilience,
+                    EnergyResilience = bodypart.EnergyResilience,
+                    HealthResilience = bodypart.HealthResilience,
+                })
+                .OrderBy(bp => bp.Part)
+                .ToList();
+
+            List<ReputationDTO> reputations = new List<ReputationDTO>();
+
+            foreach (Reputation reputation in character.Reputations)
+            {
+                ReputationDTO rep = new ReputationDTO
+                {
+                    Id = reputation.Id,
+                    Name = reputation.Name,
+                    Rank = reputation.Rank
+                };
+                reputations.Add(rep);
+            }
+
+            List<WeaponDTO> weapons = new List<WeaponDTO>();
+
+            foreach (Weapon weapon in character.Weapons)
+            {
+                WeaponDTO weap = new WeaponDTO
+                {
+                    Id = weapon.Id,
+                    Name = weapon.Name,
+                    TN = weapon.TN,
+                    DC = weapon.DC,
+                    PhysicalDamage = weapon.PhysicalDamage,
+                    EnergyDamage = weapon.EnergyDamage,
+                    RadiationDamage = weapon.RadiationDamage,
+                    PoisonDamage = weapon.PoisonDamage,
+                    Effects = weapon.Effects,
+                    Proprieties = weapon.Proprieties,
+                    RateOfFire = weapon.RateOfFire,
+                    Range = weapon.Range,
+                    Ammo = weapon.Ammo,
+                    Weigth = weapon.Weigth,
+                };
+                weapons.Add(weap);
+            }
+
+            List<PerkDTO> perks = new List<PerkDTO>();
+
+            foreach (Perk perk in character.Perks)
+            {
+                PerkDTO pk = new PerkDTO
+                {
+                    Id = perk.Id,
+                    Name = perk.Name,
+                    Rank = perk.Rank,
+                    Effect = perk.Effect,
+                };
+                perks.Add(pk);
+            }
+
+            List<AmmoDTO> ammos = new List<AmmoDTO>();
+
+            foreach (Ammo ammo in character.Inventory.Ammos)
+            {
+                AmmoDTO am = new AmmoDTO
+                {
+                    Id = ammo.Id,
+                    Name = ammo.Name,
+                    Quantity = ammo.Quantity,
+                    Weight = ammo.Weight,
+                };
+                ammos.Add(am);
+            }
+
+            List<ChemicalDTO> chemicals = new List<ChemicalDTO>();
+
+            foreach (Chemical chemical in character.Inventory.Chemicals)
+            {
+                ChemicalDTO chem = new ChemicalDTO
+                {   
+                    Id = chemical.Id,  
+                    Name = chemical.Name,
+                    Quantity = chemical.Quantity,
+                    Weight = chemical.Weight,
+                };
+                chemicals.Add(chem);
+            }
+
+            List<DrinkDTO> drinks = new List<DrinkDTO>();
+
+            foreach (Drink drink in character.Inventory.Drinks)
+            {
+                DrinkDTO drk = new DrinkDTO
+                {   
+                    Id = drink.Id,
+                    Name = drink.Name,
+                    Quantity = drink.Quantity,
+                    Weight = drink.Weight,
+                };
+                drinks.Add(drk);
+            }
+
+            List<EquipementDTO> equipements = new List<EquipementDTO>();
+
+            foreach (Equipement equipement in character.Inventory.Equipements)
+            {
+                EquipementDTO equip = new EquipementDTO
+                {
+                    Id = equipement.Id,
+                    Name = equipement.Name,
+                    Quantity = equipement.Quantity,
+                    Weight = equipement.Weight,
+                };
+                equipements.Add(equip);
+            }
+
+            List<FoodDTO> foods = new List<FoodDTO>();
+
+            foreach (Food food in character.Inventory.Foods)
+            {
+                FoodDTO fd = new FoodDTO
+                {
+                    Id = food.Id,
+                    Name = food.Name,
+                    Quantity = food.Quantity,
+                    Weight = food.Weight,
+                };
+                foods.Add(fd);
+            }
+
+            List<MaterialDTO> materials = new List<MaterialDTO>();
+
+            foreach (Material material in character.Inventory.Materials)
+            {
+                MaterialDTO mat = new MaterialDTO
+                {
+                    Id = material.Id,
+                    Name = material.Name,
+                    Quantity = material.Quantity,
+                    Weight = material.Weight,
+                };
+                materials.Add(mat);
+            }
+
+            CharacterDTO characterDTO = new CharacterDTO()
+            {
+                Id= character.Id,
+                Name = character.Name,
+                Xp = character.Xp,
+                XpToNext = character.XpToNext,
+                Origin = character.Origin,
+                Level = character.Level,
+                MeleeBonus = character.MeleeBonus,
+                Defence = character.Defence,
+                Initiative = character.Initiative,
+                HealthPoint = character.HealthPoint,
+                HealthPointMax = character.HealthPointMax,
+                MentalHealthPoint = character.MentalHealthPoint,
+                MentalHealthPointMax = character.MentalHealthPointMax,
+                PoisonResilience = character.PoisonResilience,
+                Background = character.Background,
+                Caps = character.Caps,
+                MaxWeight = character.MaxWeight,
+                Attributes = new AttributeDTO
+                {
+                    Id = character.Attributes.Id,
+                    Strength = character.Attributes.Strength,
+                    Perception = character.Attributes.Perception,
+                    Endurance = character.Attributes.Endurance,
+                    Charisme = character.Attributes.Charisme,
+                    Intelligence = character.Attributes.Intelligence,
+                    Agility = character.Attributes.Agility,
+                    Luck = character.Attributes.Luck,
+                    LuckPoints = character.Attributes.LuckPoints,
+                },
+                Skills = new SkillDTO
+                {
+                    Id = character.Skill.Id,
+                    RightHanded = character.Skill.RightHanded,
+                    LeftHanded = character.Skill.LeftHanded,
+                    Athletics = character.Skill.Athletics,
+                    Athleticslvl = character.Skill.Athleticslvl,
+                    Lockpicking = character.Skill.Lockpicking,
+                    Lockpickinglvl = character.Skill.Lockpickinglvl,
+                    Speech = character.Skill.Speech,
+                    Speechlvl = character.Skill.Speechlvl,
+                    Stealth = character.Skill.Stealth,
+                    Stealthlvl = character.Skill.Stealthlvl,
+                    Medecine = character.Skill.Medecine,
+                    Medecinelvl = character.Skill.Medecinelvl,
+                    Driving = character.Skill.Driving,
+                    Drivinglvl = character.Skill.Drivinglvl,
+                    Repair = character.Skill.Repair,
+                    Repairlvl = character.Skill.Repairlvl,
+                    Science = character.Skill.Science,
+                    Sciencelvl = character.Skill.Sciencelvl,
+                    Survival = character.Skill.Survival,
+                    Survivallvl = character.Skill.Survivallvl,
+                    Bartering = character.Skill.Bartering,
+                    Barteringlvl = character.Skill.Barteringlvl,
+                    BareHands = character.Skill.BareHands,
+                    BareHandslvl = character.Skill.Barteringlvl,
+                    MeleeWeapon = character.Skill.MeleeWeapon,
+                    MeleeWeaponlvl = character.Skill.MeleeWeaponlvl,
+                    LightWeapon = character.Skill.LightWeapon,
+                    LightWeaponlvl = character.Skill.LightWeaponlvl,
+                    HeavyWeapon = character.Skill.HeavyWeapon,
+                    HeavyWeaponlvl = character.Skill.HeavyWeaponlvl,
+                    EnergieWeapon = character.Skill.EnergieWeapon,
+                    EnergieWeaponlvl = character.Skill.EnergieWeaponlvl,
+                    ThrowingWeapon = character.Skill.ThrowingWeapon,
+                    ThrowingWeaponlvl = character.Skill.ThrowingWeaponlvl,
+                    Explosive = character.Skill.Explosive,
+                    Explosivelvl = character.Skill.Explosivelvl,
+                    Game = character.Skill.Game,
+                    Gamelvl = character.Skill.Gamelvl,
+                },
+                BodyParts = bodyParts,
+                Reputations = reputations,
+                Weapons = weapons,
+                Perks = perks,
+                Inventories = new InventoryDTO
+                {
+                    Id = character.Id,
+                    Ammos = ammos,
+                    Chemicals = chemicals,
+                    Drinks = drinks,
+                    Equipements = equipements,
+                    Foods = foods,
+                    Materials = materials,
+                }
+            };
+            return characterDTO;
+        }
+
+        public IEnumerable<CharacterName>? CharacterNameListForATeam(string teamName)
         {
             List<CharacterName> characterList = new List<CharacterName>();
             List<Player> players = _falloutRPContext.Players
                 .Include(p => p.Team)
                 .Include(p => p.Character)
-                .Where(p => p.Team.Name == name)
+                .Where(p => p.Team.Name == teamName)
                 .ToList();
 
             if (players.Count == 0)

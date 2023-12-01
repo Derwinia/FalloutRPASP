@@ -4,6 +4,7 @@ namespace FalloutRP.DTO
 {
     public class CharacterDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int Xp { get; set; }
         public int XpToNext { get; set; }
@@ -20,7 +21,6 @@ namespace FalloutRP.DTO
         public string Background { get; set; } = string.Empty;
         public int Caps { get; set; }
         public float MaxWeight { get; set; }
-        public float Weight { get; set; }
         public AttributeDTO Attributes { get; set; } = new AttributeDTO();
         public SkillDTO Skills { get; set; } = new SkillDTO();
         public List<BodyPartDTO> BodyParts { get; set; } = new List<BodyPartDTO>();
@@ -31,6 +31,7 @@ namespace FalloutRP.DTO
     }
     public class AttributeDTO
     {
+        public int Id { get; set; }
         public int Strength { get; set; }
         public int Perception { get; set; }
         public int Endurance { get; set; }
@@ -42,6 +43,7 @@ namespace FalloutRP.DTO
     }
     public class SkillDTO
     {
+        public int Id { get; set; }
         public bool RightHanded { get; set; }
         public bool LeftHanded { get; set; }
         public bool Athletics { get; set; }
@@ -83,6 +85,7 @@ namespace FalloutRP.DTO
     }
     public class BodyPartDTO
     {
+        public int Id { get; set; }
         public int Part { get; set; }
         public int PhysicalResilience { get; set; }
         public int RadiationResilience { get; set; }
@@ -91,11 +94,13 @@ namespace FalloutRP.DTO
     }
     public class ReputationDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int Rank { get; set; }
     }
     public class WeaponDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int TN { get; set; }
         public int DC { get; set; }
@@ -112,12 +117,14 @@ namespace FalloutRP.DTO
     }
     public class PerkDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int Rank { get; set; }
         public string Effect { get; set; } = string.Empty;
     }
     public class InventoryDTO
     {
+        public int Id { get; set; }
         public List<AmmoDTO> Ammos { get; set; } = new List<AmmoDTO>();
         public List<ChemicalDTO> Chemicals { get; set; } = new List<ChemicalDTO>();
         public List<DrinkDTO> Drinks { get; set; } = new List<DrinkDTO>();
@@ -127,36 +134,42 @@ namespace FalloutRP.DTO
     }
     public class AmmoDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int Quantity { get; set; }
         public float Weight { get; set; }
     }
     public class ChemicalDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int Quantity { get; set; }
         public float Weight { get; set; }
     }
     public class DrinkDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int Quantity { get; set; }
         public float Weight { get; set; }
     }
     public class EquipementDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int Quantity { get; set; }
         public float Weight { get; set; }
     }
     public class FoodDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int Quantity { get; set; }
         public float Weight { get; set; }
     }
     public class MaterialDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int Quantity { get; set; }
         public float Weight { get; set; }

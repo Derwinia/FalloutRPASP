@@ -149,7 +149,7 @@ namespace FalloutRPDAL
                     Background = "sort du tuto",
                     Caps = 100,
                     MaxWeight = 120,
-                    PlayerId = 1,
+                    PlayerId = 2,
                 }
             });
         }
@@ -244,7 +244,47 @@ namespace FalloutRPDAL
                     EnergyResilience = 2,
                     HealthResilience = 1,
                     CharacterId = 1,
-                }
+                },
+                new BodyPart
+                {
+                    Id = 3,
+                    Part = 3,
+                    PhysicalResilience = 2,
+                    RadiationResilience = 1,
+                    EnergyResilience = 1,
+                    HealthResilience = 0,
+                    CharacterId = 1,
+                },
+                new BodyPart
+                {
+                    Id = 4,
+                    Part = 4,
+                    PhysicalResilience = 5,
+                    RadiationResilience = 5,
+                    EnergyResilience = 5,
+                    HealthResilience = 5,
+                    CharacterId = 1,
+                },
+                new BodyPart
+                {
+                    Id = 5,
+                    Part = 5,
+                    PhysicalResilience = 0,
+                    RadiationResilience = 1,
+                    EnergyResilience = 0,
+                    HealthResilience = 1,
+                    CharacterId = 1,
+                },
+                new BodyPart
+                {
+                    Id = 6,
+                    Part = 6,
+                    PhysicalResilience = 2,
+                    RadiationResilience = 2,
+                    EnergyResilience = 2,
+                    HealthResilience = 2,
+                    CharacterId = 1,
+                },
             });
         }
         private void LoadReputation(ModelBuilder builder)

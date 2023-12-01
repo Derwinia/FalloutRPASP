@@ -14,16 +14,22 @@ namespace FalloutRP.Controllers
                 _characterService = characterService;
             }
 
-        [HttpGet("Character")]
-        public IActionResult CharacterGetById(int id)
+        //[HttpGet("Character/{characterId}")]
+        //public IActionResult CharacterGetById([FromRoute]int characterId)
+        //{
+        //    return Ok(_characterService.CharacterGetById(characterId));
+        //}
+
+        [HttpGet("Character-Get-By-Pseudo/{pseudo}")]
+        public IActionResult CharacterGetBypseudo([FromRoute] string pseudo)
         {
-            return Ok(_characterService.CharacterGetById(id));
+            return Ok(_characterService.CharacterGetByPseudo(pseudo));
         }
 
-        [HttpGet("Character-List-For-A-Team/{name}")]
-        public IActionResult CharacterListForATeam([FromRoute]string name)
+        [HttpGet("Character-Name-List-For-A-Team/{teamName}")]
+        public IActionResult CharacterNameListForATeam([FromRoute]string teamName)
         {
-            return Ok(_characterService.CharacterListForATeam(name));
+            return Ok(_characterService.CharacterNameListForATeam(teamName));
         }
     }
 }
