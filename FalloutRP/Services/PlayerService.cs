@@ -1,6 +1,7 @@
 ﻿using FalloutRP.DTO;
 using FalloutRPDAL;
 using FalloutRPDAL.Entities;
+using FalloutRPDAL.Entities.CharacterClasses;
 using FalloutRPDAL.Services;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -20,6 +21,7 @@ namespace FalloutRP.Services
         public void PlayerCreate(PlayerCreateDTO playerCreateDTO)
         {
             Player? player = _falloutRPContext.Players.FirstOrDefault(u => u.Pseudo == playerCreateDTO.Pseudo);
+            Character character;
 
             if (player != null)
             {
@@ -41,12 +43,131 @@ namespace FalloutRP.Services
                 Team = team,
                 PasswordSalt = passwordSalt,
                 PasswordHash = passwordHash,
-                Character = null,
+                Character = new Character()
+                {
+                    Name = "nom du personnage",
+                    Xp = 0,
+                    XpToNext = 100,
+                    Origin = "fort fort lointain",
+                    Level = 1,
+                    MeleeBonus = 0,
+                    Defence = 0,
+                    Initiative = 0,
+                    HealthPoint = 10,
+                    HealthPointMax = 10,
+                    PoisonResilience = 0,
+                    Background = "sort du tuto",
+                    Caps = 0,
+                    MaxWeight = 0,
+
+                    BodyParts = new List<BodyPart>{
+                        new BodyPart
+                        {
+                            Part = 1,
+                            PhysicalResilience = 1,
+                            RadiationResilience = 2,
+                            EnergyResilience = 3,
+                            HealthResilience = 4,
+                        },
+                        new BodyPart
+                        {
+                            Part = 2,
+                            PhysicalResilience = 4,
+                            RadiationResilience = 3,
+                            EnergyResilience = 2,
+                            HealthResilience = 1,
+                        },
+                        new BodyPart
+                        {
+                            Part = 3,
+                            PhysicalResilience = 2,
+                            RadiationResilience = 1,
+                            EnergyResilience = 1,
+                            HealthResilience = 0,
+                        },
+                        new BodyPart
+                        {
+                            Part = 4,
+                            PhysicalResilience = 5,
+                            RadiationResilience = 5,
+                            EnergyResilience = 5,
+                            HealthResilience = 5,
+                        },
+                        new BodyPart
+                        {
+                            Part = 5,
+                            PhysicalResilience = 0,
+                            RadiationResilience = 1,
+                            EnergyResilience = 0,
+                            HealthResilience = 1,
+                        },
+                        new BodyPart
+                        {
+                            Part = 6,
+                            PhysicalResilience = 2,
+                            RadiationResilience = 2,
+                            EnergyResilience = 2,
+                            HealthResilience = 2,
+                        }
+                    },
+                    Attributes = new FalloutRPDAL.Entities.CharacterClasses.Attribute()
+                    {
+                        Strength = 1,
+                        Perception = 2,
+                        Endurance = 3,
+                        Charisme = 4,
+                        Intelligence = 5,
+                        Agility = 6,
+                        Luck = 7,
+                        LuckPoints = 8,
+                    },
+                    Skill = new Skill()
+                    {
+                        RightHanded = true,
+                        LeftHanded = false,
+                        Athletics = false,
+                        Athleticslvl = 0,
+                        Lockpicking = false,
+                        Lockpickinglvl = 0,
+                        Speech = false,
+                        Speechlvl = 0,
+                        Stealth =false,
+                        Stealthlvl = 0,
+                        Medecine = false,
+                        Medecinelvl = 0,
+                        Driving = false,
+                        Drivinglvl = 0,
+                        Repair = false,
+                        Repairlvl = 0,
+                        Science = false,
+                        Sciencelvl = 0,
+                        Survival = false,
+                        Survivallvl = 0,
+                        Bartering = false,
+                        Barteringlvl = 0,
+                        BareHands = false,
+                        BareHandslvl = 0,
+                        MeleeWeapon = false,
+                        MeleeWeaponlvl = 0,
+                        LightWeapon = false,
+                        LightWeaponlvl = 0,
+                        HeavyWeapon = false,
+                        HeavyWeaponlvl = 0,
+                        EnergieWeapon = false,
+                        EnergieWeaponlvl = 0,
+                        ThrowingWeapon = false,
+                        ThrowingWeaponlvl = 0,
+                        Explosive = false,
+                        Explosivelvl = 0,
+                        Game = false,
+                        Gamelvl = 0,
+                    },
+                    Inventory = new Inventory()
+                    {
+
+                    },
+                }
             };
-
-            
-            
-
             _falloutRPContext.Players.Add(player);
             _falloutRPContext.SaveChanges();
         }

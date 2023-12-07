@@ -1,4 +1,5 @@
-﻿using FalloutRP.Services;
+﻿using FalloutRP.DTO;
+using FalloutRP.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FalloutRP.Controllers
@@ -30,6 +31,20 @@ namespace FalloutRP.Controllers
         public IActionResult CharacterNameListForATeam([FromRoute]string teamName)
         {
             return Ok(_characterService.CharacterNameListForATeam(teamName));
+        }
+
+        [HttpPatch("Character-Update")]
+        public IActionResult CharacterUpdate([FromBody] CharacterDTO characterModifyDTO)
+        {
+            try
+            {
+                _characterService.CharacterUpdate(characterModifyDTO);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
