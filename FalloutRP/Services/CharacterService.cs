@@ -504,6 +504,35 @@ namespace FalloutRP.Services
             _falloutRPContext.SaveChanges();
         }
 
+        public int CharacterPerkCreate(int concernedCharacter)
+        {
+            Perk newPerk = new Perk
+            {
+                Name = "x",
+                Rank = 0,
+                Effect = "x",
+                CharacterId = concernedCharacter,
+            };
+            _falloutRPContext.Perks.Add(newPerk);
+            _falloutRPContext.SaveChanges();
+
+            return newPerk.Id;
+        }
+
+        public void CharacterPerkDelete(int perkId)
+        {
+            Perk perk = _falloutRPContext.Perks.FirstOrDefault(x => x.Id == perkId);
+
+            if(perk == null)
+            {
+                throw new KeyNotFoundException("Cette compétence n'existe pas");
+            }
+
+            _falloutRPContext.Perks.Remove(perk);
+
+            _falloutRPContext.SaveChanges();
+        }
+
         public IEnumerable<CharacterName>? CharacterNameListForATeam(string teamName)
         {
             List<CharacterName> characterList = new List<CharacterName>();

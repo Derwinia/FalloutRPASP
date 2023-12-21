@@ -112,13 +112,10 @@ namespace FalloutRP.Services
             _falloutRPContext.SaveChanges();
         }
 
-        public void RuleDelete(string id)
+        public void RuleDelete(int id)
         {
-            Rule? rule = null;
-            if(int.TryParse(id, out int idInt))
-            {
-                rule = _falloutRPContext.Rules.FirstOrDefault(r => r.Id == idInt);
-            }
+            Rule rule = _falloutRPContext.Rules.FirstOrDefault(r => r.Id == id);
+
             if (rule == null)
             {
                 throw new KeyNotFoundException("Cette règle n'existe pas");

@@ -122,6 +122,10 @@ namespace FalloutRP.DTO
         public int Rank { get; set; }
         public string Effect { get; set; } = string.Empty;
     }
+    public class PerkCreateDTO
+    {
+        public string Name { get; set; } = string.Empty;
+    }
     public class InventoryDTO
     {
         public int Id { get; set; }

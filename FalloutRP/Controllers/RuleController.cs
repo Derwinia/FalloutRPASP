@@ -50,7 +50,6 @@ namespace FalloutRP.Controllers
             return Ok(_ruleService.RuleFromPath(path));
         }
         
-
         [HttpPatch("Rule-Update")]
         public IActionResult RuleUpdate([FromBody] RuleModifyDTO ruleModifyDTO)
         {
@@ -80,12 +79,12 @@ namespace FalloutRP.Controllers
         }
 
         [HttpDelete("Rule-Delete/{id}")]
-        public IActionResult RuleDelete([FromRoute] string id)
+        public IActionResult RuleDelete([FromRoute] int id)
         {
             try
             {
                 _ruleService.RuleDelete(id);
-                return NoContent();
+                return Ok();
             }
             catch (Exception ex)
             {
