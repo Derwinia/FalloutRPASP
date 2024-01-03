@@ -533,6 +533,207 @@ namespace FalloutRP.Services
             _falloutRPContext.SaveChanges();
         }
 
+        public int CharacterAmmoCreate(int concernedInventory)
+        {
+            Ammo newAmmo = new Ammo
+            {
+                Name = "x",
+                Quantity = 0,
+                Weight = 0,
+                InventoryId = concernedInventory,
+            };
+            _falloutRPContext.Ammos.Add(newAmmo);
+            _falloutRPContext.SaveChanges();
+
+            return newAmmo.Id;
+        }
+
+        public void CharacterAmmoDelete(int ammoId)
+        {
+            Ammo ammo = _falloutRPContext.Ammos.FirstOrDefault(x => x.Id == ammoId);
+
+            if (ammo == null)
+            {
+                throw new KeyNotFoundException("Cette munition n'existe pas");
+            }
+
+            _falloutRPContext.Ammos.Remove(ammo);
+
+            _falloutRPContext.SaveChanges();
+        }
+
+        public int CharacterChemCreate(int concernedInventory)
+        {
+            Chemical newChem = new Chemical
+            {
+                Name = "x",
+                Quantity = 0,
+                Weight = 0,
+                InventoryId = concernedInventory,
+            };
+            _falloutRPContext.Chemicals.Add(newChem);
+            _falloutRPContext.SaveChanges();
+
+            return newChem.Id;
+        }
+
+        public void CharacterChemDelete(int chemId)
+        {
+            Chemical chem = _falloutRPContext.Chemicals.FirstOrDefault(x => x.Id == chemId);
+
+            if (chem == null)
+            {
+                throw new KeyNotFoundException("Ce produit n'existe pas");
+            }
+
+            _falloutRPContext.Chemicals.Remove(chem);
+
+            _falloutRPContext.SaveChanges();
+        }
+
+        public int CharacterDrinkCreate(int concernedInventory)
+        {
+            Drink newDrink = new Drink
+            {
+                Name = "x",
+                Quantity = 0,
+                Weight = 0,
+                InventoryId = concernedInventory,
+            };
+            _falloutRPContext.Drinks.Add(newDrink);
+            _falloutRPContext.SaveChanges();
+
+            return newDrink.Id;
+        }
+
+        public void CharacterDrinkDelete(int drinkId)
+        {
+            Drink drink = _falloutRPContext.Drinks.FirstOrDefault(x => x.Id == drinkId);
+
+            if (drink == null)
+            {
+                throw new KeyNotFoundException("Cette boisson n'existe pas");
+            }
+
+            _falloutRPContext.Drinks.Remove(drink);
+
+            _falloutRPContext.SaveChanges();
+        }
+
+        public int CharacterEquipCreate(int concernedInventory)
+        {
+            Equipement newEquip = new Equipement
+            {
+                Name = "x",
+                Quantity = 0,
+                Weight = 0,
+                InventoryId = concernedInventory,
+            };
+            _falloutRPContext.Equipements.Add(newEquip);
+            _falloutRPContext.SaveChanges();
+
+            return newEquip.Id;
+        }
+
+        public void CharacterEquipDelete(int equipId)
+        {
+            Equipement equip = _falloutRPContext.Equipements.FirstOrDefault(x => x.Id == equipId);
+
+            if (equip == null)
+            {
+                throw new KeyNotFoundException("Cet équipement n'existe pas");
+            }
+
+            _falloutRPContext.Equipements.Remove(equip);
+
+            _falloutRPContext.SaveChanges();
+        }
+        public int CharacterFoodCreate(int concernedInventory)
+        {
+            Food newFood = new Food
+            {
+                Name = "x",
+                Quantity = 0,
+                Weight = 0,
+                InventoryId = concernedInventory,
+            };
+            _falloutRPContext.Foods.Add(newFood);
+            _falloutRPContext.SaveChanges();
+
+            return newFood.Id;
+        }
+
+        public void CharacterFoodDelete(int foodId)
+        {
+            Food food = _falloutRPContext.Foods.FirstOrDefault(x => x.Id == foodId);
+
+            if (food == null)
+            {
+                throw new KeyNotFoundException("Cette nourriture n'existe pas");
+            }
+
+            _falloutRPContext.Foods.Remove(food);
+
+            _falloutRPContext.SaveChanges();
+        }
+
+        public int CharacterMatCreate(int concernedInventory)
+        {
+            Material newMat = new Material
+            {
+                Name = "x",
+                Quantity = 0,
+                Weight = 0,
+                InventoryId = concernedInventory,
+            };
+            _falloutRPContext.Materials.Add(newMat);
+            _falloutRPContext.SaveChanges();
+
+            return newMat.Id;
+        }
+
+        public void CharacterMatDelete(int matId)
+        {
+            Material mat = _falloutRPContext.Materials.FirstOrDefault(x => x.Id == matId);
+
+            if (mat == null)
+            {
+                throw new KeyNotFoundException("Ce matériel n'existe pas");
+            }
+
+            _falloutRPContext.Materials.Remove(mat);
+
+            _falloutRPContext.SaveChanges();
+        }
+
+        public int CharacterReputationCreate(int concernedCharacter)
+        {
+            Reputation newRep = new Reputation
+            {
+                Name = "x",
+                Rank = 0,
+                CharacterId = concernedCharacter,
+            };
+            _falloutRPContext.Reputations.Add(newRep);
+            _falloutRPContext.SaveChanges();
+
+            return newRep.Id;
+        }
+
+        public void CharacterReputationDelete(int repId)
+        {
+            Reputation rep = _falloutRPContext.Reputations.FirstOrDefault(x => x.Id == repId);
+
+            if (rep == null)
+            {
+                throw new KeyNotFoundException("Cette reputation n'existe pas");
+            }
+
+            _falloutRPContext.Reputations.Remove(rep);
+
+            _falloutRPContext.SaveChanges();
+        }
+
         public IEnumerable<CharacterName>? CharacterNameListForATeam(string teamName)
         {
             List<CharacterName> characterList = new List<CharacterName>();
